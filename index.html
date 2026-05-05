@@ -34,8 +34,6 @@
     }
 
     .app { position: fixed; inset: 0; background: var(--background); overflow: hidden; }
-
-    /* EDIT 1: tambah opacity + transition opacity, tambah class .exit */
     .screen {
       position: absolute; inset: 0; display: flex; flex-direction: column;
       background: var(--background); transform: translateX(100%);
@@ -77,7 +75,10 @@
     .icon-btn:active { opacity: 0.7; }
     .icon-btn svg { width: 22px; height: 22px; stroke: var(--text-primary); }
     .progress-text { font-size: 13px; font-weight: 600; letter-spacing: 1.5px; color: var(--text-accent); font-variant-numeric: tabular-nums; }
-    .exercise-content { padding: 16px 24px 200px; }
+    .exercise-content { padding: 16px 24px 200px; transition: opacity 180ms ease, transform 180ms ease; }
+    .exercise-content.fade-out { opacity: 0; transform: translateX(-14px); }
+    .exercise-content.fade-in { opacity: 0; transform: translateX(14px); transition: none; }
+    .exercise-content.fade-in.playing { opacity: 1; transform: translateX(0); transition: opacity 220ms ease, transform 220ms ease; }
     .exercise-label { font-size: 12px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-accent); margin-bottom: 8px; }
     .exercise-name { font-size: 30px; font-weight: 700; letter-spacing: -0.8px; line-height: 38px; margin-bottom: 20px; }
     .rep-chip { display: inline-flex; align-items: baseline; background: var(--surface); border: 1px solid var(--border-light); padding: 10px 18px; border-radius: 999px; margin-bottom: 28px; }
@@ -102,19 +103,39 @@
     .dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border-light); transition: width 0.3s, background 0.3s; }
     .dot.active { width: 24px; background: var(--primary); }
 
-    /* EDIT 2: tambah CSS fade untuk konten antar gerakan */
-    .exercise-content { transition: opacity 180ms ease, transform 180ms ease; }
-    .exercise-content.fade-out { opacity: 0; transform: translateX(-14px); }
-    .exercise-content.fade-in { opacity: 0; transform: translateX(14px); transition: none; }
-    .exercise-content.fade-in.playing { opacity: 1; transform: translateX(0); transition: opacity 220ms ease, transform 220ms ease; }
-
     /* Video Modal */
-    .video-modal { position: fixed; inset: 0; background: #000; z-index: 100; display: none; animation: fadeIn 200ms ease-out; }
-    .video-modal.open { display: block; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .video-modal-close { position: absolute; top: calc(var(--safe-top) + 16px); right: 16px; width: 44px; height: 44px; border-radius: 22px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; z-index: 10; }
+    .video-modal {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,0);
+      pointer-events: none;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 300ms ease;
+    }
+    .video-modal.open {
+      background: rgba(0,0,0,0.65);
+      pointer-events: all;
+    }
+    .video-sheet {
+      width: 80%; aspect-ratio: 16/9;
+      background: #000;
+      border-radius: 16px;
+      overflow: hidden;
+      opacity: 0; transform: scale(0.92);
+      transition: opacity 300ms ease, transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .video-modal.open .video-sheet { opacity: 1; transform: scale(1); }
+    .video-modal-close {
+      position: absolute; top: calc(var(--safe-top) + 16px); right: 16px;
+      width: 44px; height: 44px; border-radius: 22px;
+      background: rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10;
+    }
     .video-modal-close svg { width: 26px; height: 26px; stroke: #FFF; }
-    .video-modal-iframe-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .video-modal-iframe-wrap {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
     .video-modal-iframe-wrap iframe { width: 100%; height: 100%; border: 0; }
 
     /* Halaman Selesai */
@@ -216,10 +237,12 @@
 
   <!-- Video Modal -->
   <div class="video-modal" id="video-modal" role="dialog" aria-modal="true">
-  <button class="video-modal-close" id="btn-close-video" aria-label="Tutup">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-  </button>
-  <div class="video-modal-iframe-wrap" id="iframe-wrap"></div>
+    <button class="video-modal-close" id="btn-close-video" aria-label="Tutup">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="video-sheet">
+      <div class="video-modal-iframe-wrap" id="iframe-wrap"></div>
+    </div>
   </div>
 </div>
 
@@ -311,7 +334,6 @@
     selesai: document.getElementById("screen-selesai"),
   };
 
-  /* EDIT 3: showScreen dengan koordinasi exit + enter */
   function showScreen(name) {
     const current = Object.values(screens).find(s => s.classList.contains("active"));
     const next = screens[name];
@@ -338,12 +360,16 @@
 
   const modal = document.getElementById("video-modal");
   const iframeWrap = document.getElementById("iframe-wrap");
+
   function openVideo(ytId) {
     iframeWrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + ytId + '?autoplay=1&playsinline=1&rel=0&modestbranding=1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>';
     modal.classList.add("open");
   }
-  function closeVideo() { modal.classList.remove("open"); iframeWrap.innerHTML = ""; }
+  function closeVideo() {
+    modal.classList.remove("open");
+    setTimeout(() => { iframeWrap.innerHTML = ""; }, 300);
   }
+
   document.getElementById("btn-close-video").addEventListener("click", closeVideo);
   modal.addEventListener("click", e => { if (e.target === modal) closeVideo(); });
   document.getElementById("video-thumb").addEventListener("click", () => {
@@ -354,7 +380,6 @@
     if (history.length > 1) history.back(); else location.hash = "#/";
   });
 
-  /* EDIT 4: btn-lanjut dengan fade konten antar gerakan */
   document.getElementById("btn-lanjut").addEventListener("click", e => {
     const t = e.currentTarget.dataset.target;
     if (t === "selesai") { location.hash = "#/senin/selesai"; return; }
