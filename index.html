@@ -111,422 +111,6 @@
       display: flex; align-items: center; justify-content: center;
       transition: background 300ms ease;
     }
-    .video-modal.open { background: rgba(0,0,0,0.65); pointer-events: all; }
-    .video-sheet {
-      width: 80%; aspect-ratio: 16/9; background: #000; border-radius: 16px; overflow: hidden;
-      opacity: 0; transform: scale(0.92);
-      transition: opacity 300ms ease, transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
-    }
-    .video-modal.open .video-sheet { opacity: 1; transform: scale(1); }
-    .video-modal-close {
-      position: absolute; top: calc(var(--safe-top) + 16px); right: 16px;
-      width: 44px; height: 44px; border-radius: 22px;
-      background: rgba(255,255,255,0.15);
-      display: flex; align-items: center; justify-content: center; z-index: 10;
-    }
-    .video-modal-close svg { width: 26px; height: 26px; stroke: #FFF; }
-    .video-modal-iframe-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-    .video-modal-iframe-wrap iframe { width: 100%; height: 100%; border: 0; }
-
-    /* Halaman Selesai */
-    .selesai-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: calc(var(--safe-top) + 24px) 32px 24px; animation: fadeUp 600ms cubic-bezier(0.32, 0.72, 0, 1) both; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .badge-wrap { width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; margin-bottom: 36px; position: relative; }
-    .badge { width: 110px; height: 110px; border-radius: 55px; background: var(--primary); display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 24px rgba(147,165,207,0.35); }
-    .badge svg { width: 56px; height: 56px; stroke: #FFF; stroke-width: 3; fill: none; }
-    .ring-pulse { position: absolute; width: 110px; height: 110px; border-radius: 55px; border: 2px solid var(--lavender); animation: pulse 1600ms ease-out infinite; }
-    @keyframes pulse { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.45); opacity: 0; } }
-    .selesai-title { font-size: 44px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 10px; }
-    .selesai-subtitle { font-size: 16px; font-weight: 500; letter-spacing: -0.2px; color: var(--text-secondary); margin-bottom: 28px; }
-    .alhamdulillah-wrap { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
-    .alhamdulillah-line { width: 28px; height: 1px; background: var(--border-light); }
-    .alhamdulillah { font-size: 22px; font-weight: 600; font-style: italic; letter-spacing: -0.5px; color: var(--primary); }
-    .stats-row { display: flex; align-items: center; background: var(--surface); border: 1px solid var(--border-light); border-radius: 20px; padding: 18px 28px; }
-    .stat-box { display: flex; flex-direction: column; align-items: center; min-width: 88px; }
-    .stat-num { font-size: 28px; font-weight: 700; letter-spacing: -0.8px; font-variant-numeric: tabular-nums; }
-    .stat-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--text-accent); margin-top: 4px; }
-    .stat-divider { width: 1px; height: 36px; background: var(--border-light); margin: 0 24px; }
-    .selesai-bottom { padding: 14px 24px calc(var(--safe-bottom) + 16px); }
-  </style>
-</head>
-<body>
-<div class="app">
-
-  <!-- Halaman A: Beranda -->
-  <div class="screen active" id="screen-home">
-    <div class="scroll-area">
-      <div class="home-padding">
-        <div class="home-header">
-          <div class="home-subtitle">MEI 2026</div>
-          <div class="home-title">Perbaikan Postur<br/>Raihan</div>
-        </div>
-        <div class="section-label">Workout</div>
-        <div id="day-cards"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Halaman B: Gerakan (shared Senin & Rabu) -->
-  <div class="screen" id="screen-exercise">
-    <div class="top-bar">
-      <button class="icon-btn" id="btn-back" aria-label="Kembali">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      </button>
-      <div class="progress-text" id="progress-text">1 / 4</div>
-    </div>
-    <div class="scroll-area">
-      <div class="exercise-content">
-        <div class="exercise-label" id="exercise-label">GERAKAN 1</div>
-        <div class="exercise-name" id="exercise-name">—</div>
-        <div class="rep-chip">
-          <span class="rep-chip-num" id="chip-sets">3</span>
-          <span class="rep-chip-mute">set</span>
-          <span class="rep-chip-num">×</span>
-          <span class="rep-chip-num" id="chip-reps">12</span>
-          <span class="rep-chip-mute" id="chip-unit">rep</span>
-        </div>
-        <div class="video-thumb" id="video-thumb">
-          <img id="video-thumb-img" alt="Video thumbnail" />
-          <div class="video-thumb-overlay"></div>
-          <div class="play-circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="video-thumb-badge">YouTube Shorts</div>
-        </div>
-        <div class="catatan-label">CATATAN</div>
-        <div class="catatan-text" id="catatan-text">—</div>
-      </div>
-    </div>
-    <div class="bottom-bar">
-      <button class="lanjut-btn" id="btn-lanjut">Lanjut →</button>
-      <div class="dot-row" id="dot-row"></div>
-    </div>
-  </div>
-
-  <!-- Halaman Selesai: Senin -->
-  <div class="screen" id="screen-selesai-senin">
-    <div class="selesai-container">
-      <div class="badge-wrap">
-        <div class="ring-pulse"></div>
-        <div class="badge"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></div>
-      </div>
-      <div class="selesai-title">Selesai!</div>
-      <div class="selesai-subtitle">Latihan Senin · Push done ✓</div>
-      <div class="alhamdulillah-wrap">
-        <div class="alhamdulillah-line"></div>
-        <div class="alhamdulillah">Alhamdulillah</div>
-        <div class="alhamdulillah-line"></div>
-      </div>
-      <div class="stats-row">
-        <div class="stat-box"><div class="stat-num">4</div><div class="stat-label">GERAKAN</div></div>
-        <div class="stat-divider"></div>
-        <div class="stat-box"><div class="stat-num">13</div><div class="stat-label">TOTAL SET</div></div>
-      </div>
-    </div>
-    <div class="selesai-bottom">
-      <button class="lanjut-btn btn-kembali">Kembali ke Beranda</button>
-    </div>
-  </div>
-
-  <!-- Halaman Selesai: Rabu -->
-  <div class="screen" id="screen-selesai-rabu">
-    <div class="selesai-container">
-      <div class="badge-wrap">
-        <div class="ring-pulse"></div>
-        <div class="badge"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></div>
-      </div>
-      <div class="selesai-title">Selesai!</div>
-      <div class="selesai-subtitle">Latihan Rabu · Legs done ✓</div>
-      <div class="alhamdulillah-wrap">
-        <div class="alhamdulillah-line"></div>
-        <div class="alhamdulillah">Alhamdulillah</div>
-        <div class="alhamdulillah-line"></div>
-      </div>
-      <div class="stats-row">
-        <div class="stat-box"><div class="stat-num">4</div><div class="stat-label">GERAKAN</div></div>
-        <div class="stat-divider"></div>
-        <div class="stat-box"><div class="stat-num">12</div><div class="stat-label">TOTAL SET</div></div>
-      </div>
-    </div>
-    <div class="selesai-bottom">
-      <button class="lanjut-btn btn-kembali">Kembali ke Beranda</button>
-    </div>
-  </div>
-
-  <!-- Video Modal -->
-  <div class="video-modal" id="video-modal" role="dialog" aria-modal="true">
-    <button class="video-modal-close" id="btn-close-video" aria-label="Tutup">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-    </button>
-    <div class="video-sheet">
-      <div class="video-modal-iframe-wrap" id="iframe-wrap"></div>
-    </div>
-  </div>
-
-</div>
-<script>
-  const PROGRAM_YEAR = 2026, PROGRAM_MONTH = 4, MONTH_LABEL = "Mei";
-
-  const WORKOUTS = [
-    { id: "senin", day: "Senin", focus: "Push", dates: [4, 11, 18, 25] },
-    { id: "rabu",  day: "Rabu",  focus: "Legs", dates: [6, 13, 20, 27] },
-    { id: "jumat", day: "Jumat", focus: "Pull", dates: [1, 8, 15, 22, 29] },
-  ];
-
-  const SENIN_EXERCISES = [
-    { id: 1, name: "Incline Dumbbell Press",  sets: 3, reps: 12, unit: "rep",   ytId: "8fXfwG4ftaQ", catatan: "Atur kursi 30 derajat." },
-    { id: 2, name: "Dumbbell Shoulder Press", sets: 3, reps: 12, unit: "rep",   ytId: "NQ-JJYay1TM", catatan: "**Jepit tulang belikat ke kursi** agar lehermu tidak ikut tegang dan memperparah *forward head*." },
-    { id: 3, name: "Lateral Raise",           sets: 3, reps: 15, unit: "rep",   ytId: "-_XE4qbV7Yw", catatan: "Pimpin dengan siku, bukan telapak tangan." },
-    { id: 4, name: "Tricep Pushdown (Cable)", sets: 4, reps: 15, unit: "rep",   ytId: "XpeCPOHJTK8", catatan: "**Jangan biarkan siku maju-mundur**. Kalau siku bergerak, itu berarti kamu pakai momentum, bukan otot tricep." },
-  ];
-
-  const RABU_EXERCISES = [
-    { id: 1, name: "Goblet Squat",       sets: 3, reps: 12, unit: "rep",   ytId: "lRYBbchqxtI", catatan: "Dumbbell tempel di dada. Jangan biarkan punggung melengkung ke depan." },
-    { id: 2, name: "Leg Press",          sets: 3, reps: 12, unit: "rep",   ytId: "_bkqGYB-fWI", catatan: "Jangan meluruskan kaki sampai lutut terkunci (snap)." },
-    { id: 3, name: "Plank",              sets: 3, reps: 60, unit: "detik", ytId: "N31wPfeQbNs", catatan: "Bokong jangan naik terlalu tinggi dan jangan turun (melengkung). **Satu garis lurus.**" },
-    { id: 4, name: "Face Pulls (Cable)", sets: 3, reps: 15, unit: "rep",   ytId: "zi7waeqXpzw", catatan: "Gerakan kunci postur. Harus maksimal." },
-  ];
-
-  let currentWorkoutId = "senin";
-  let currentExercises = SENIN_EXERCISES;
-
-  function getUpcomingDate(dates) {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-    return dates.find(d => new Date(PROGRAM_YEAR, PROGRAM_MONTH, d).getTime() >= today) || dates[dates.length - 1];
-  }
-
-  function parseFormatted(text) {
-    const esc = s => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-    let out = "", buf = "", bold = false, italic = false, i = 0;
-    const flush = () => { if (!buf) return; let c = esc(buf); if (bold) c = "<b>"+c+"</b>"; if (italic) c = "<i>"+c+"</i>"; out += c; buf = ""; };
-    while (i < text.length) {
-      if (text.substr(i, 2) === "**") { flush(); bold = !bold; i += 2; }
-      else if (text[i] === "*") { flush(); italic = !italic; i += 1; }
-      else { buf += text[i]; i += 1; }
-    }
-    flush();
-    return out;
-  }
-
-  function renderHome() {
-    document.getElementById("day-cards").innerHTML = WORKOUTS.map(w => {
-      const upcoming = String(getUpcomingDate(w.dates)).padStart(2, "0");
-      const isActive = w.id === "senin" || w.id === "rabu";
-      return `
-        <div class="day-card" data-id="${w.id}" ${isActive ? "" : 'style="opacity:0.65"'}>
-          <div class="day-card-left">
-            <div class="day-card-title">${w.day}</div>
-            <div class="day-card-focus">${w.focus}</div>
-          </div>
-          <div class="day-card-right">
-            <div class="day-card-date">${upcoming}</div>
-            <div class="day-card-month">${MONTH_LABEL}</div>
-          </div>
-          <div class="day-card-accent"></div>
-        </div>`;
-    }).join("");
-    document.querySelectorAll(".day-card").forEach(el => {
-      el.addEventListener("click", () => {
-        const id = el.dataset.id;
-        if (id === "senin") { currentWorkoutId = "senin"; currentExercises = SENIN_EXERCISES; location.hash = "#/senin/1"; }
-        else if (id === "rabu") { currentWorkoutId = "rabu"; currentExercises = RABU_EXERCISES; location.hash = "#/rabu/1"; }
-        else alert("Halaman " + id + " belum tersedia.");
-      });
-    });
-  }
-
-  function renderExercise(idNum) {
-    const exercises = currentExercises;
-    const total = exercises.length;
-    const ex = exercises.find(e => e.id === idNum);
-    if (!ex) { location.hash = "#/"; return; }
-    document.getElementById("progress-text").textContent = idNum + " / " + total;
-    document.getElementById("exercise-label").textContent = "GERAKAN " + idNum;
-    document.getElementById("exercise-name").textContent = ex.name;
-    document.getElementById("chip-sets").textContent = ex.sets;
-    document.getElementById("chip-reps").textContent = ex.reps;
-    document.getElementById("chip-unit").textContent = ex.unit;
-    document.getElementById("video-thumb-img").src = "https://img.youtube.com/vi/" + ex.ytId + "/hqdefault.jpg";
-    document.getElementById("video-thumb").dataset.ytId = ex.ytId;
-    document.getElementById("catatan-text").innerHTML = parseFormatted(ex.catatan);
-    const isLast = idNum === total;
-    const next = isLast ? null : exercises.find(e => e.id === idNum + 1);
-    const btn = document.getElementById("btn-lanjut");
-    btn.textContent = isLast ? "Selesai →" : ("Lanjut → " + next.name);
-    btn.dataset.target = isLast ? "selesai" : String(idNum + 1);
-    document.getElementById("dot-row").innerHTML = exercises.map(e =>
-      '<div class="dot' + (e.id === idNum ? " active" : "") + '"></div>'
-    ).join("");
-    document.querySelector("#screen-exercise .scroll-area").scrollTop = 0;
-  }
-
-  const screens = {
-    home: document.getElementById("screen-home"),
-    exercise: document.getElementById("screen-exercise"),
-    "selesai-senin": document.getElementById("screen-selesai-senin"),
-    "selesai-rabu": document.getElementById("screen-selesai-rabu"),
-  };
-
-  function showScreen(name) {
-    const current = Object.values(screens).find(s => s.classList.contains("active"));
-    const next = screens[name];
-    if (!next) return;
-    if (current && current !== next) {
-      current.classList.add("exit");
-      setTimeout(() => current.classList.remove("active", "exit"), 340);
-    }
-    next.classList.add("active");
-  }
-
-  function handleRoute() {
-    const hash = location.hash || "#/";
-    if (hash === "#/" || hash === "") {
-      showScreen("home");
-    } else if (hash === "#/senin/selesai") {
-      showScreen("selesai-senin");
-    } else if (hash === "#/rabu/selesai") {
-      showScreen("selesai-rabu");
-    } else {
-      const m = hash.match(/^#\/(senin|rabu)\/(\d+)$/);
-      if (m) {
-        const day = m[1];
-        const idNum = parseInt(m[2], 10);
-        if (day === "senin") { currentWorkoutId = "senin"; currentExercises = SENIN_EXERCISES; }
-        else if (day === "rabu") { currentWorkoutId = "rabu"; currentExercises = RABU_EXERCISES; }
-        const total = currentExercises.length;
-        if (idNum >= 1 && idNum <= total) { renderExercise(idNum); showScreen("exercise"); }
-        else location.hash = "#/";
-      } else {
-        location.hash = "#/";
-      }
-    }
-  }
-
-  const modal = document.getElementById("video-modal");
-  const iframeWrap = document.getElementById("iframe-wrap");
-
-  function openVideo(ytId) {
-    iframeWrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + ytId + '?autoplay=1&playsinline=1&rel=0&modestbranding=1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>';
-    modal.classList.add("open");
-  }
-  function closeVideo() {
-    modal.classList.remove("open");
-    setTimeout(() => { iframeWrap.innerHTML = ""; }, 300);
-  }
-
-  document.getElementById("btn-close-video").addEventListener("click", closeVideo);
-  modal.addEventListener("click", e => { if (e.target === modal) closeVideo(); });
-  document.getElementById("video-thumb").addEventListener("click", () => {
-    const ytId = document.getElementById("video-thumb").dataset.ytId;
-    if (ytId) openVideo(ytId);
-  });
-
-  document.getElementById("btn-back").addEventListener("click", () => {
-    if (history.length > 1) history.back(); else location.hash = "#/";
-  });
-
-  document.getElementById("btn-lanjut").addEventListener("click", e => {
-    const t = e.currentTarget.dataset.target;
-    if (t === "selesai") { location.hash = "#/" + currentWorkoutId + "/selesai"; return; }
-    if (!t) return;
-    const content = document.querySelector(".exercise-content");
-    content.classList.add("fade-out");
-    setTimeout(() => {
-      location.hash = "#/" + currentWorkoutId + "/" + t;
-      content.classList.remove("fade-out");
-      content.classList.add("fade-in");
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        content.classList.add("playing");
-        setTimeout(() => content.classList.remove("fade-in", "playing"), 250);
-      }));
-    }, 180);
-  });
-
-  document.querySelectorAll(".btn-kembali").forEach(btn => {
-    btn.addEventListener("click", () => location.hash = "#/");
-  });
-
-  renderHome();
-  window.addEventListener("hashchange", handleRoute);
-  handleRoute();
-</script>
-</body>
-</html>    .screen {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
-      background: var(--background); transform: translateX(100%);
-      opacity: 0;
-      transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1),
-                  opacity 320ms cubic-bezier(0.32, 0.72, 0, 1);
-      overflow: hidden;
-    }
-    .screen.active { transform: translateX(0); opacity: 1; }
-    .screen.exit { transform: translateX(-6%) scale(0.97); opacity: 0; }
-    #screen-home { transform: translateX(0); opacity: 1; }
-    .scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-
-    /* Halaman A */
-    .home-padding { padding: calc(var(--safe-top) + 32px) 24px 48px; }
-    .home-header { margin-bottom: 56px; display: flex; flex-direction: column; gap: 8px; }
-    .home-subtitle { font-size: 13px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-accent); }
-    .home-title { font-size: 32px; font-weight: 700; letter-spacing: -0.8px; line-height: 40px; }
-    .section-label { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; line-height: 24px; margin-bottom: 24px; }
-    .day-card {
-      position: relative; display: flex; align-items: center; justify-content: space-between;
-      background: var(--surface); border: 1px solid var(--border-light);
-      border-radius: 24px; padding: 24px; margin-bottom: 16px; min-height: 104px; overflow: hidden;
-      box-shadow: 0 12px 24px rgba(30, 41, 59, 0.03);
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .day-card:active { opacity: 0.7; transform: scale(0.99); }
-    .day-card-left { flex: 1; min-width: 0; }
-    .day-card-title { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
-    .day-card-focus { font-size: 16px; color: var(--text-secondary); margin-top: 4px; }
-    .day-card-right { display: flex; flex-direction: column; align-items: flex-end; margin-left: 16px; }
-    .day-card-date { font-size: 32px; font-weight: 600; letter-spacing: -1px; line-height: 36px; font-variant-numeric: tabular-nums; }
-    .day-card-month { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-accent); margin-top: 2px; }
-    .day-card-accent { position: absolute; right: 0; top: 30%; bottom: 30%; width: 3px; background: var(--lavender); border-top-left-radius: 2px; border-bottom-left-radius: 2px; }
-
-    /* Halaman B */
-    .top-bar { padding: calc(var(--safe-top) + 12px) 24px 8px; display: flex; align-items: center; justify-content: space-between; }
-    .icon-btn { width: 40px; height: 40px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; }
-    .icon-btn:active { opacity: 0.7; }
-    .icon-btn svg { width: 22px; height: 22px; stroke: var(--text-primary); }
-    .progress-text { font-size: 13px; font-weight: 600; letter-spacing: 1.5px; color: var(--text-accent); font-variant-numeric: tabular-nums; }
-    .exercise-content { padding: 16px 24px 200px; transition: opacity 180ms ease, transform 180ms ease; }
-    .exercise-content.fade-out { opacity: 0; transform: translateX(-14px); }
-    .exercise-content.fade-in { opacity: 0; transform: translateX(14px); transition: none; }
-    .exercise-content.fade-in.playing { opacity: 1; transform: translateX(0); transition: opacity 220ms ease, transform 220ms ease; }
-    .exercise-label { font-size: 12px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-accent); margin-bottom: 8px; }
-    .exercise-name { font-size: 30px; font-weight: 700; letter-spacing: -0.8px; line-height: 38px; margin-bottom: 20px; }
-    .rep-chip { display: inline-flex; align-items: baseline; background: var(--surface); border: 1px solid var(--border-light); padding: 10px 18px; border-radius: 999px; margin-bottom: 28px; }
-    .rep-chip-num { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; font-variant-numeric: tabular-nums; }
-    .rep-chip-mute { font-size: 13px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.5px; margin: 0 4px; }
-    .video-thumb { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; background: var(--surface); margin-bottom: 32px; cursor: pointer; transition: opacity 0.2s; }
-    .video-thumb:active { opacity: 0.85; }
-    .video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .video-thumb-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.25); }
-    .play-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; border-radius: 32px; background: rgba(15, 23, 42, 0.85); display: flex; align-items: center; justify-content: center; }
-    .play-circle svg { width: 26px; height: 26px; fill: #FFF; margin-left: 3px; }
-    .video-thumb-badge { position: absolute; bottom: 12px; left: 12px; padding: 4px 10px; background: rgba(255,255,255,0.92); border-radius: 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
-    .catatan-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-accent); margin-bottom: 10px; }
-    .catatan-text { font-size: 17px; line-height: 26px; color: var(--text-secondary); letter-spacing: -0.1px; }
-    .catatan-text b { font-weight: 700; color: var(--text-primary); }
-    .catatan-text i { font-style: italic; }
-
-    .bottom-bar { position: absolute; left: 0; right: 0; bottom: 0; background: var(--background); padding: 14px 24px calc(var(--safe-bottom) + 16px); border-top: 1px solid var(--border-light); }
-    .lanjut-btn { width: 100%; padding: 18px 20px; border-radius: 16px; background: var(--text-primary); color: #FFF; font-size: 15px; font-weight: 600; letter-spacing: -0.2px; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .lanjut-btn:active { opacity: 0.85; transform: scale(0.99); }
-    .dot-row { display: flex; justify-content: center; gap: 6px; margin-top: 14px; }
-    .dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border-light); transition: width 0.3s, background 0.3s; }
-    .dot.active { width: 24px; background: var(--primary); }
-
-    /* Video Modal */
-    .video-modal {
-      position: fixed; inset: 0; z-index: 100;
-      background: rgba(0,0,0,0);
-      pointer-events: none;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 300ms ease;
-    }
     .video-modal.open {
       background: rgba(0,0,0,0.65);
       pointer-events: all;
@@ -675,6 +259,12 @@
     { id: 3, name: "Lateral Raise",           sets: 3, reps: 15, ytId: "-_XE4qbV7Yw", catatan: "Pimpin dengan siku, bukan telapak tangan." },
     { id: 4, name: "Tricep Pushdown (Cable)", sets: 4, reps: 15, ytId: "XpeCPOHJTK8", catatan: "**Jangan biarkan siku maju-mundur**. Kalau siku bergerak, itu berarti kamu pakai momentum, bukan otot tricep." },
   ];
+  const RABU_EXERCISES = [
+    { id: 1, name: "Goblet Squat",      sets: 3, reps: 12, unit: "rep",   ytId: "lRYBbchqxtI", catatan: "Dumbbell tempel di dada. Jangan biarkan punggung melengkung ke depan." },
+    { id: 2, name: "Leg Press",         sets: 3, reps: 12, unit: "rep",   ytId: "_bkqGYB-fWI", catatan: "Jangan meluruskan kaki sampai lutut terkunci (snap)." },
+    { id: 3, name: "Plank",             sets: 3, reps: 60, unit: "detik", ytId: "N31wPfeQbNs", catatan: "Bokong jangan naik terlalu tinggi dan jangan turun (melengkung). **Satu garis lurus.**" },
+    { id: 4, name: "Face Pulls (Cable)",sets: 3, reps: 15, unit: "rep",   ytId: "zi7waeqXpzw", catatan: "Gerakan kunci postur. Harus maksimal." },
+  ];
   const TOTAL = SENIN_EXERCISES.length;
 
   function getUpcomingDate(dates) {
@@ -717,28 +307,31 @@
       el.addEventListener("click", () => {
         const id = el.dataset.id;
         if (id === "senin") location.hash = "#/senin/1";
+        else if (id === "rabu") location.hash = "#/rabu/1";
         else alert("Halaman " + id + " belum tersedia.");
       });
     });
   }
 
-  function renderExercise(idNum) {
-    const ex = SENIN_EXERCISES.find(e => e.id === idNum);
+  function renderExercise(idNum, exercises) {
+    const ex = exercises.find(e => e.id === idNum);
     if (!ex) { location.hash = "#/"; return; }
-    document.getElementById("progress-text").textContent = idNum + " / " + TOTAL;
+    const total = exercises.length;
+    document.getElementById("progress-text").textContent = idNum + " / " + total;
     document.getElementById("exercise-label").textContent = "GERAKAN " + idNum;
     document.getElementById("exercise-name").textContent = ex.name;
     document.getElementById("chip-sets").textContent = ex.sets;
     document.getElementById("chip-reps").textContent = ex.reps;
+    document.querySelector("#screen-exercise .rep-chip .rep-chip-mute:last-child").textContent = ex.unit || "rep";
     document.getElementById("video-thumb-img").src = "https://img.youtube.com/vi/" + ex.ytId + "/hqdefault.jpg";
     document.getElementById("video-thumb").dataset.ytId = ex.ytId;
     document.getElementById("catatan-text").innerHTML = parseFormatted(ex.catatan);
-    const isLast = idNum === TOTAL;
-    const next = isLast ? null : SENIN_EXERCISES.find(e => e.id === idNum + 1);
+    const isLast = idNum === total;
+    const next = isLast ? null : exercises.find(e => e.id === idNum + 1);
     const btn = document.getElementById("btn-lanjut");
     btn.textContent = isLast ? "Selesai →" : ("Lanjut → " + next.name);
     btn.dataset.target = isLast ? "selesai" : String(idNum + 1);
-    document.getElementById("dot-row").innerHTML = SENIN_EXERCISES.map(e =>
+    document.getElementById("dot-row").innerHTML = exercises.map(e =>
       '<div class="dot' + (e.id === idNum ? " active" : "") + '"></div>'
     ).join("");
     document.querySelector("#screen-exercise .scroll-area").scrollTop = 0;
@@ -764,11 +357,17 @@
     const hash = location.hash || "#/";
     if (hash === "#/" || hash === "") showScreen("home");
     else if (hash === "#/senin/selesai") showScreen("selesai");
+    else if (hash === "#/rabu/selesai") showScreen("selesai");
     else {
-      const m = hash.match(/^#\/senin\/(\d+)$/);
-      if (m) {
-        const idNum = parseInt(m[1], 10);
-        if (idNum >= 1 && idNum <= TOTAL) { renderExercise(idNum); showScreen("exercise"); }
+      const mSenin = hash.match(/^#\/senin\/(\d+)$/);
+      const mRabu  = hash.match(/^#\/rabu\/(\d+)$/);
+      if (mSenin) {
+        const idNum = parseInt(mSenin[1], 10);
+        if (idNum >= 1 && idNum <= SENIN_EXERCISES.length) { renderExercise(idNum, SENIN_EXERCISES); showScreen("exercise"); }
+        else location.hash = "#/";
+      } else if (mRabu) {
+        const idNum = parseInt(mRabu[1], 10);
+        if (idNum >= 1 && idNum <= RABU_EXERCISES.length) { renderExercise(idNum, RABU_EXERCISES); showScreen("exercise"); }
         else location.hash = "#/";
       } else location.hash = "#/";
     }
@@ -798,12 +397,14 @@
 
   document.getElementById("btn-lanjut").addEventListener("click", e => {
     const t = e.currentTarget.dataset.target;
-    if (t === "selesai") { location.hash = "#/senin/selesai"; return; }
+    const isRabu = location.hash.startsWith("#/rabu/");
+    const hari = isRabu ? "rabu" : "senin";
+    if (t === "selesai") { location.hash = "#/" + hari + "/selesai"; return; }
     if (!t) return;
     const content = document.querySelector(".exercise-content");
     content.classList.add("fade-out");
     setTimeout(() => {
-      location.hash = "#/senin/" + t;
+      location.hash = "#/" + hari + "/" + t;
       content.classList.remove("fade-out");
       content.classList.add("fade-in");
       requestAnimationFrame(() => requestAnimationFrame(() => {
