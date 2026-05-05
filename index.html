@@ -289,9 +289,9 @@
   function renderHome() {
     document.getElementById("day-cards").innerHTML = WORKOUTS.map(w => {
       const upcoming = String(getUpcomingDate(w.dates)).padStart(2, "0");
-      const isSenin = w.id === "senin";
+      const isActive = w.id === "senin" || w.id === "rabu";
       return `
-        <div class="day-card" data-id="${w.id}" ${isSenin ? "" : 'style="opacity:0.65"'}>
+        <div class="day-card" data-id="${w.id}" ${isActive ? "" : 'style="opacity:0.65"'}>
           <div class="day-card-left">
             <div class="day-card-title">${w.day}</div>
             <div class="day-card-focus">${w.focus}</div>
@@ -327,6 +327,13 @@
     document.getElementById("video-thumb").dataset.ytId = ex.ytId;
     document.getElementById("catatan-text").innerHTML = parseFormatted(ex.catatan);
     const isLast = idNum === total;
+    if (isLast) {
+      const totalSets = exercises.reduce((sum, e) => sum + e.sets, 0);
+      const isRabu = location.hash.startsWith("#/rabu/");
+      document.querySelector("#screen-selesai .selesai-subtitle").textContent =
+        isRabu ? "Latihan Rabu · Legs done ✓" : "Latihan Senin · Push done ✓";
+      document.querySelector("#screen-selesai .stat-num:last-child").textContent = totalSets;
+    }
     const next = isLast ? null : exercises.find(e => e.id === idNum + 1);
     const btn = document.getElementById("btn-lanjut");
     btn.textContent = isLast ? "Selesai →" : ("Lanjut → " + next.name);
