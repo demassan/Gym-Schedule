@@ -34,16 +34,20 @@
     }
 
     .app { position: fixed; inset: 0; background: var(--background); overflow: hidden; }
+
+    /* EDIT 1: tambah opacity + transition opacity, tambah class .exit */
     .screen {
       position: absolute; inset: 0; display: flex; flex-direction: column;
       background: var(--background); transform: translateX(100%);
       opacity: 0;
       transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1),
-                  opacity 320ms cubic-bezier(0.32, 0.72, 0, 1); overflow: hidden;
+                  opacity 320ms cubic-bezier(0.32, 0.72, 0, 1);
+      overflow: hidden;
     }
     .screen.active { transform: translateX(0); opacity: 1; }
     .screen.exit { transform: translateX(-6%) scale(0.97); opacity: 0; }
     #screen-home { transform: translateX(0); opacity: 1; }
+    .scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
     /* Halaman A */
     .home-padding { padding: calc(var(--safe-top) + 32px) 24px 48px; }
@@ -97,6 +101,12 @@
     .dot-row { display: flex; justify-content: center; gap: 6px; margin-top: 14px; }
     .dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border-light); transition: width 0.3s, background 0.3s; }
     .dot.active { width: 24px; background: var(--primary); }
+
+    /* EDIT 2: tambah CSS fade untuk konten antar gerakan */
+    .exercise-content { transition: opacity 180ms ease, transform 180ms ease; }
+    .exercise-content.fade-out { opacity: 0; transform: translateX(-14px); }
+    .exercise-content.fade-in { opacity: 0; transform: translateX(14px); transition: none; }
+    .exercise-content.fade-in.playing { opacity: 1; transform: translateX(0); transition: opacity 220ms ease, transform 220ms ease; }
 
     /* Video Modal */
     .video-modal { position: fixed; inset: 0; background: #000; z-index: 100; display: none; animation: fadeIn 200ms ease-out; }
@@ -300,6 +310,8 @@
     exercise: document.getElementById("screen-exercise"),
     selesai: document.getElementById("screen-selesai"),
   };
+
+  /* EDIT 3: showScreen dengan koordinasi exit + enter */
   function showScreen(name) {
     const current = Object.values(screens).find(s => s.classList.contains("active"));
     const next = screens[name];
@@ -309,6 +321,7 @@
     }
     next.classList.add("active");
   }
+
   function handleRoute() {
     const hash = location.hash || "#/";
     if (hash === "#/" || hash === "") showScreen("home");
@@ -339,11 +352,25 @@
   document.getElementById("btn-back").addEventListener("click", () => {
     if (history.length > 1) history.back(); else location.hash = "#/";
   });
+
+  /* EDIT 4: btn-lanjut dengan fade konten antar gerakan */
   document.getElementById("btn-lanjut").addEventListener("click", e => {
     const t = e.currentTarget.dataset.target;
-    if (t === "selesai") location.hash = "#/senin/selesai";
-    else if (t) location.hash = "#/senin/" + t;
+    if (t === "selesai") { location.hash = "#/senin/selesai"; return; }
+    if (!t) return;
+    const content = document.querySelector(".exercise-content");
+    content.classList.add("fade-out");
+    setTimeout(() => {
+      location.hash = "#/senin/" + t;
+      content.classList.remove("fade-out");
+      content.classList.add("fade-in");
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        content.classList.add("playing");
+        setTimeout(() => content.classList.remove("fade-in", "playing"), 250);
+      }));
+    }, 180);
   });
+
   document.getElementById("btn-kembali").addEventListener("click", () => location.hash = "#/");
 
   renderHome();
