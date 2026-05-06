@@ -51,7 +51,7 @@
     .home-padding { padding: calc(var(--safe-top) + 32px) 24px 48px; }
     .home-header { margin-bottom: 56px; display: flex; flex-direction: column; gap: 8px; }
     .home-subtitle { font-size: 13px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-accent); }
-    .home-title { font-size: 32px; font-weight: 700; letter-spacing: -0.8px; line-height: 40px; }
+    .home-title { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; line-height: 34px; }
     .section-label { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; line-height: 24px; margin-bottom: 24px; }
     .day-card {
       position: relative; display: flex; align-items: center; justify-content: space-between;
@@ -60,14 +60,24 @@
       box-shadow: 0 12px 24px rgba(30, 41, 59, 0.03);
       transition: opacity 0.2s, transform 0.2s;
     }
-    .day-card:active { opacity: 0.7; transform: scale(0.99); }
+
     .day-card-left { flex: 1; min-width: 0; }
     .day-card-title { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
     .day-card-focus { font-size: 16px; color: var(--text-secondary); margin-top: 4px; }
     .day-card-right { display: flex; flex-direction: column; align-items: flex-end; margin-left: 16px; }
     .day-card-date { font-size: 32px; font-weight: 600; letter-spacing: -1px; line-height: 36px; font-variant-numeric: tabular-nums; }
     .day-card-month { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-accent); margin-top: 2px; }
-    .day-card-accent { position: absolute; right: 0; top: 30%; bottom: 30%; width: 3px; background: var(--lavender); border-top-left-radius: 2px; border-bottom-left-radius: 2px; }
+    .day-card-accent { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); width: 8px; height: 14px; opacity: 0.35; }
+    .day-card-accent::before, .day-card-accent::after { content: ""; position: absolute; right: 0; width: 8px; height: 2px; background: var(--text-primary); border-radius: 2px; }
+    .day-card-accent::before { top: 3px; transform: rotate(40deg); }
+    .day-card-accent::after { bottom: 3px; transform: rotate(-40deg); }
+    .day-card.is-next { border: 1.5px solid var(--primary); background: #F0F4FB; box-shadow: 0 12px 28px rgba(147,165,207,0.18); }
+    .day-card.is-next .day-card-accent { opacity: 0.7; }
+    .day-card.is-past { opacity: 0.4; }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .day-card { animation: cardIn 380ms cubic-bezier(0.32, 0.72, 0, 1) both; }
+    .day-card .ripple { position: absolute; border-radius: 50%; background: rgba(147,165,207,0.35); transform: scale(0); animation: rippleAnim 500ms ease-out forwards; pointer-events: none; }
+    @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
 
     /* Halaman B */
     .top-bar { padding: calc(var(--safe-top) + 12px) 24px 8px; display: flex; align-items: center; justify-content: space-between; }
@@ -254,22 +264,22 @@
     { id: "jumat", day: "Jumat", focus: "Pull", dates: [1, 8, 15, 22, 29] },
   ];
   const SENIN_EXERCISES = [
-    { id: 1, name: "Incline Dumbbell Press",  sets: 3, reps: 12, unit: "rep", ytId: "8fXfwG4ftaQ", catatan: "**Atur kursi 30 derajat.**" },
-    { id: 2, name: "Dumbbell Shoulder Press", sets: 3, reps: 12, unit: "rep", ytId: "NQ-JJYay1TM", catatan: "**Jepit tulang belikat ke kursi** agar leher tidak ikut tegang dan memperparah *forward head*." },
-    { id: 3, name: "Lateral Raise",           sets: 3, reps: 15, unit: "rep", ytId: "-_XE4qbV7Yw", catatan: "**Pimpin dengan siku, bukan telapak tangan.**" },
-    { id: 4, name: "Tricep Pushdown (Cable)", sets: 4, reps: 15, unit: "rep", ytId: "XpeCPOHJTK8", catatan: "**Jangan biarkan siku maju-mundur.** Kalau siku bergerak, itu berarti kamu pakai momentum, bukan otot tricep." },
+    { id: 1, name: "Incline Dumbbell Press",  sets: 3, reps: 12, unit: "rep", ytId: "8fXfwG4ftaQ", catatan: "Atur kursi 30 derajat." },
+    { id: 2, name: "Dumbbell Shoulder Press", sets: 3, reps: 12, unit: "rep", ytId: "NQ-JJYay1TM", catatan: "**Jepit tulang belikat ke kursi** agar lehermu tidak ikut tegang dan memperparah *forward head*." },
+    { id: 3, name: "Lateral Raise",           sets: 3, reps: 15, unit: "rep", ytId: "-_XE4qbV7Yw", catatan: "Pimpin dengan siku, bukan telapak tangan." },
+    { id: 4, name: "Tricep Pushdown (Cable)", sets: 4, reps: 15, unit: "rep", ytId: "XpeCPOHJTK8", catatan: "**Jangan biarkan siku maju-mundur**. Kalau siku bergerak, itu berarti kamu pakai momentum, bukan otot tricep." },
   ];
   const RABU_EXERCISES = [
-    { id: 1, name: "Goblet Squat",       sets: 3, reps: 12, unit: "rep",   ytId: "lRYBbchqxtI", catatan: "**Dumbbell tempel di dada.** Jangan biarkan punggung melengkung ke depan." },
-    { id: 2, name: "Leg Press",          sets: 3, reps: 12, unit: "rep",   ytId: "_bkqGYB-fWI", catatan: "**Jangan meluruskan kaki sampai lutut terkunci.**" },
+    { id: 1, name: "Goblet Squat",       sets: 3, reps: 12, unit: "rep",   ytId: "lRYBbchqxtI", catatan: "Dumbbell tempel di dada. Jangan biarkan punggung melengkung ke depan." },
+    { id: 2, name: "Leg Press",          sets: 3, reps: 12, unit: "rep",   ytId: "_bkqGYB-fWI", catatan: "Jangan meluruskan kaki sampai lutut terkunci (snap)." },
     { id: 3, name: "Plank",              sets: 3, reps: 60, unit: "detik", ytId: "N31wPfeQbNs", catatan: "Bokong jangan naik terlalu tinggi dan jangan turun (melengkung). **Satu garis lurus.**" },
-    { id: 4, name: "Face Pulls (Cable)", sets: 3, reps: 15, unit: "rep",   ytId: "zi7waeqXpzw", catatan: "**Gerakan mengkunci postur, harus maksimal!**" },
+    { id: 4, name: "Face Pulls (Cable)", sets: 3, reps: 15, unit: "rep",   ytId: "zi7waeqXpzw", catatan: "Gerakan kunci postur. Harus maksimal." },
   ];
   const JUMAT_EXERCISES = [
-    { id: 1, name: "Lat Pulldown",        sets: 3, reps: 12, unit: "rep", ytId: "Z4zHIds5nDk", catatan: "**Tarik dengan siku, bukan telapak tangan.** Jangan tarik sampai ke perut, cukup sampai atas dada." },
-    { id: 2, name: "Seated Cable Row",    sets: 3, reps: 12, unit: "rep", ytId: "hnNjcQI9ZMU", catatan: "**Lakukan semaksimal mungkin!**" },
+    { id: 1, name: "Lat Pulldown",        sets: 3, reps: 12, unit: "rep", ytId: "Z4zHlds5nDk", catatan: "**Tarik dengan siku, bukan telapak tangan.** Jangan tarik sampai ke perut, cukup sampai atas dada." },
+    { id: 2, name: "Seated Cable Row",    sets: 3, reps: 12, unit: "rep", ytId: "hnNjcQI9ZMU", catatan: "" },
     { id: 3, name: "Dumbbell Bicep Curl", sets: 4, reps: 12, unit: "rep", ytId: "pl3z_AihNzk", catatan: "**Jangan mengayunkan pinggang.** Jika beban 5kg membuat badanmu goyang, turunkan beban." },
-    { id: 4, name: "Hammer Curl",         sets: 3, reps: 15, unit: "rep", ytId: "8H5oWMNWWeQ", catatan: "**Lakukan semaksimal mungkin!**" },
+    { id: 4, name: "Hammer Curl",         sets: 3, reps: 15, unit: "rep", ytId: "8H5oWMNWWeQ", catatan: "" },
   ];
 
   const SELESAI_INFO = {
@@ -298,11 +308,27 @@
   }
 
   function renderHome() {
-    document.getElementById("day-cards").innerHTML = WORKOUTS.map(w => {
+    const now = new Date();
+    const todayTs = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+
+    // Cari kartu terdekat (is-next): workout dengan upcoming date paling dekat dari hari ini
+    let closestDiff = Infinity, closestId = null;
+    WORKOUTS.forEach(w => {
+      const d = getUpcomingDate(w.dates);
+      const ts = new Date(PROGRAM_YEAR, PROGRAM_MONTH, d).getTime();
+      const diff = ts - todayTs;
+      if (diff >= 0 && diff < closestDiff) { closestDiff = diff; closestId = w.id; }
+    });
+
+    document.getElementById("day-cards").innerHTML = WORKOUTS.map((w, idx) => {
       const upcoming = String(getUpcomingDate(w.dates)).padStart(2, "0");
-      const isActive = w.id === "senin" || w.id === "rabu" || w.id === "jumat";
+      const upcomingTs = new Date(PROGRAM_YEAR, PROGRAM_MONTH, parseInt(upcoming, 10)).getTime();
+      const isPast = upcomingTs < todayTs;
+      const isNext = w.id === closestId;
+      const extraClass = isNext ? " is-next" : isPast ? " is-past" : "";
+      const staggerDelay = `animation-delay:${idx * 80}ms`;
       return `
-        <div class="day-card" data-id="${w.id}" ${isActive ? "" : 'style="opacity:0.65"'}>
+        <div class="day-card${extraClass}" data-id="${w.id}" style="${staggerDelay}">
           <div class="day-card-left">
             <div class="day-card-title">${w.day}</div>
             <div class="day-card-focus">${w.focus}</div>
@@ -314,13 +340,27 @@
           <div class="day-card-accent"></div>
         </div>`;
     }).join("");
+
     document.querySelectorAll(".day-card").forEach(el => {
-      el.addEventListener("click", () => {
+      // No.15 — ripple effect
+      el.addEventListener("click", e => {
+        const rect = el.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        const ripple = document.createElement("span");
+        ripple.className = "ripple";
+        ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
+        el.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 520);
+
         const id = el.dataset.id;
-        if (id === "senin") location.hash = "#/senin/1";
-        else if (id === "rabu") location.hash = "#/rabu/1";
-        else if (id === "jumat") location.hash = "#/jumat/1";
-        else alert("Halaman " + id + " belum tersedia.");
+        setTimeout(() => {
+          if (id === "senin") location.hash = "#/senin/1";
+          else if (id === "rabu") location.hash = "#/rabu/1";
+          else if (id === "jumat") location.hash = "#/jumat/1";
+          else alert("Halaman " + id + " belum tersedia.");
+        }, 120);
       });
     });
   }
