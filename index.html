@@ -245,9 +245,6 @@
 
   <!-- Video Modal -->
   <div class="video-modal" id="video-modal" role="dialog" aria-modal="true">
-    <button class="video-modal-close" id="btn-close-video" aria-label="Tutup">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-    </button>
     <div class="video-sheet">
       <div class="video-modal-iframe-wrap" id="iframe-wrap"></div>
     </div>
@@ -462,7 +459,6 @@
     setTimeout(() => { iframeWrap.innerHTML = ""; }, 300);
   }
 
-  document.getElementById("btn-close-video").addEventListener("click", closeVideo);
   modal.addEventListener("click", e => { if (e.target === modal) closeVideo(); });
   document.getElementById("video-thumb").addEventListener("click", () => {
     const ytId = document.getElementById("video-thumb").dataset.ytId;
