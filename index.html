@@ -192,7 +192,7 @@
           <span class="rep-chip-mute">set</span>
           <span class="rep-chip-num">×</span>
           <span class="rep-chip-num" id="chip-reps">12</span>
-          <span class="rep-chip-mute">rep</span>
+          <span class="rep-chip-mute" id="chip-unit">rep</span>
         </div>
         <div class="video-thumb" id="video-thumb">
           <img id="video-thumb-img" alt="Video thumbnail" />
@@ -218,16 +218,16 @@
         <div class="badge"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></div>
       </div>
       <div class="selesai-title">Selesai!</div>
-      <div class="selesai-subtitle">Latihan Senin · Push done ✓</div>
+      <div class="selesai-subtitle" id="selesai-subtitle">Latihan Senin · Push done ✓</div>
       <div class="alhamdulillah-wrap">
         <div class="alhamdulillah-line"></div>
         <div class="alhamdulillah">Alhamdulillah</div>
         <div class="alhamdulillah-line"></div>
       </div>
       <div class="stats-row">
-        <div class="stat-box"><div class="stat-num">4</div><div class="stat-label">GERAKAN</div></div>
+        <div class="stat-box"><div class="stat-num" id="selesai-gerakan">4</div><div class="stat-label">GERAKAN</div></div>
         <div class="stat-divider"></div>
-        <div class="stat-box"><div class="stat-num">13</div><div class="stat-label">TOTAL SET</div></div>
+        <div class="stat-box"><div class="stat-num" id="selesai-total-set">13</div><div class="stat-label">TOTAL SET</div></div>
       </div>
     </div>
     <div class="selesai-bottom">
@@ -254,18 +254,29 @@
     { id: "jumat", day: "Jumat", focus: "Pull", dates: [1, 8, 15, 22, 29] },
   ];
   const SENIN_EXERCISES = [
-    { id: 1, name: "Incline Dumbbell Press",  sets: 3, reps: 12, ytId: "8fXfwG4ftaQ", catatan: "Atur kursi 30 derajat." },
-    { id: 2, name: "Dumbbell Shoulder Press", sets: 3, reps: 12, ytId: "NQ-JJYay1TM", catatan: "**Jepit tulang belikat ke kursi** agar lehermu tidak ikut tegang dan memperparah *forward head*." },
-    { id: 3, name: "Lateral Raise",           sets: 3, reps: 15, ytId: "-_XE4qbV7Yw", catatan: "Pimpin dengan siku, bukan telapak tangan." },
-    { id: 4, name: "Tricep Pushdown (Cable)", sets: 4, reps: 15, ytId: "XpeCPOHJTK8", catatan: "**Jangan biarkan siku maju-mundur**. Kalau siku bergerak, itu berarti kamu pakai momentum, bukan otot tricep." },
+    { id: 1, name: "Incline Dumbbell Press",  sets: 3, reps: 12, unit: "rep", ytId: "8fXfwG4ftaQ", catatan: "Atur kursi 30 derajat." },
+    { id: 2, name: "Dumbbell Shoulder Press", sets: 3, reps: 12, unit: "rep", ytId: "NQ-JJYay1TM", catatan: "**Jepit tulang belikat ke kursi** agar lehermu tidak ikut tegang dan memperparah *forward head*." },
+    { id: 3, name: "Lateral Raise",           sets: 3, reps: 15, unit: "rep", ytId: "-_XE4qbV7Yw", catatan: "Pimpin dengan siku, bukan telapak tangan." },
+    { id: 4, name: "Tricep Pushdown (Cable)", sets: 4, reps: 15, unit: "rep", ytId: "XpeCPOHJTK8", catatan: "**Jangan biarkan siku maju-mundur**. Kalau siku bergerak, itu berarti kamu pakai momentum, bukan otot tricep." },
   ];
   const RABU_EXERCISES = [
-    { id: 1, name: "Goblet Squat",      sets: 3, reps: 12, unit: "rep",   ytId: "lRYBbchqxtI", catatan: "Dumbbell tempel di dada. Jangan biarkan punggung melengkung ke depan." },
-    { id: 2, name: "Leg Press",         sets: 3, reps: 12, unit: "rep",   ytId: "_bkqGYB-fWI", catatan: "Jangan meluruskan kaki sampai lutut terkunci (snap)." },
-    { id: 3, name: "Plank",             sets: 3, reps: 60, unit: "detik", ytId: "N31wPfeQbNs", catatan: "Bokong jangan naik terlalu tinggi dan jangan turun (melengkung). **Satu garis lurus.**" },
-    { id: 4, name: "Face Pulls (Cable)",sets: 3, reps: 15, unit: "rep",   ytId: "zi7waeqXpzw", catatan: "Gerakan kunci postur. Harus maksimal." },
+    { id: 1, name: "Goblet Squat",       sets: 3, reps: 12, unit: "rep",   ytId: "lRYBbchqxtI", catatan: "Dumbbell tempel di dada. Jangan biarkan punggung melengkung ke depan." },
+    { id: 2, name: "Leg Press",          sets: 3, reps: 12, unit: "rep",   ytId: "_bkqGYB-fWI", catatan: "Jangan meluruskan kaki sampai lutut terkunci (snap)." },
+    { id: 3, name: "Plank",              sets: 3, reps: 60, unit: "detik", ytId: "N31wPfeQbNs", catatan: "Bokong jangan naik terlalu tinggi dan jangan turun (melengkung). **Satu garis lurus.**" },
+    { id: 4, name: "Face Pulls (Cable)", sets: 3, reps: 15, unit: "rep",   ytId: "zi7waeqXpzw", catatan: "Gerakan kunci postur. Harus maksimal." },
   ];
-  const TOTAL = SENIN_EXERCISES.length;
+  const JUMAT_EXERCISES = [
+    { id: 1, name: "Lat Pulldown",        sets: 3, reps: 12, unit: "rep", ytId: "Z4zHlds5nDk", catatan: "**Tarik dengan siku, bukan telapak tangan.** Jangan tarik sampai ke perut, cukup sampai atas dada." },
+    { id: 2, name: "Seated Cable Row",    sets: 3, reps: 12, unit: "rep", ytId: "hnNjcQI9ZMU", catatan: "" },
+    { id: 3, name: "Dumbbell Bicep Curl", sets: 4, reps: 12, unit: "rep", ytId: "pl3z_AihNzk", catatan: "**Jangan mengayunkan pinggang.** Jika beban 5kg membuat badanmu goyang, turunkan beban." },
+    { id: 4, name: "Hammer Curl",         sets: 3, reps: 15, unit: "rep", ytId: "8H5oWMNWWeQ", catatan: "" },
+  ];
+
+  const SELESAI_INFO = {
+    senin: { subtitle: "Latihan Senin · Push done ✓" },
+    rabu:  { subtitle: "Latihan Rabu · Legs done ✓"  },
+    jumat: { subtitle: "Latihan Jumat · Pull done ✓"  },
+  };
 
   function getUpcomingDate(dates) {
     const now = new Date();
@@ -289,7 +300,7 @@
   function renderHome() {
     document.getElementById("day-cards").innerHTML = WORKOUTS.map(w => {
       const upcoming = String(getUpcomingDate(w.dates)).padStart(2, "0");
-      const isActive = w.id === "senin" || w.id === "rabu";
+      const isActive = w.id === "senin" || w.id === "rabu" || w.id === "jumat";
       return `
         <div class="day-card" data-id="${w.id}" ${isActive ? "" : 'style="opacity:0.65"'}>
           <div class="day-card-left">
@@ -308,9 +319,23 @@
         const id = el.dataset.id;
         if (id === "senin") location.hash = "#/senin/1";
         else if (id === "rabu") location.hash = "#/rabu/1";
+        else if (id === "jumat") location.hash = "#/jumat/1";
         else alert("Halaman " + id + " belum tersedia.");
       });
     });
+  }
+
+  function getExercises(hari) {
+    if (hari === "rabu") return RABU_EXERCISES;
+    if (hari === "jumat") return JUMAT_EXERCISES;
+    return SENIN_EXERCISES;
+  }
+
+  function getHariFromHash() {
+    const h = location.hash;
+    if (h.startsWith("#/rabu/")) return "rabu";
+    if (h.startsWith("#/jumat/")) return "jumat";
+    return "senin";
   }
 
   function renderExercise(idNum, exercises) {
@@ -322,17 +347,17 @@
     document.getElementById("exercise-name").textContent = ex.name;
     document.getElementById("chip-sets").textContent = ex.sets;
     document.getElementById("chip-reps").textContent = ex.reps;
-    document.querySelector("#screen-exercise .rep-chip .rep-chip-mute:last-child").textContent = ex.unit || "rep";
+    document.getElementById("chip-unit").textContent = ex.unit || "rep";
     document.getElementById("video-thumb-img").src = "https://img.youtube.com/vi/" + ex.ytId + "/hqdefault.jpg";
     document.getElementById("video-thumb").dataset.ytId = ex.ytId;
     document.getElementById("catatan-text").innerHTML = parseFormatted(ex.catatan);
     const isLast = idNum === total;
     if (isLast) {
+      const hari = getHariFromHash();
       const totalSets = exercises.reduce((sum, e) => sum + e.sets, 0);
-      const isRabu = location.hash.startsWith("#/rabu/");
-      document.querySelector("#screen-selesai .selesai-subtitle").textContent =
-        isRabu ? "Latihan Rabu · Legs done ✓" : "Latihan Senin · Push done ✓";
-      document.querySelectorAll("#screen-selesai .stat-num")[1].textContent = totalSets;
+      document.getElementById("selesai-subtitle").textContent = SELESAI_INFO[hari].subtitle;
+      document.getElementById("selesai-gerakan").textContent = total;
+      document.getElementById("selesai-total-set").textContent = totalSets;
     }
     const next = isLast ? null : exercises.find(e => e.id === idNum + 1);
     const btn = document.getElementById("btn-lanjut");
@@ -362,19 +387,17 @@
 
   function handleRoute() {
     const hash = location.hash || "#/";
-    if (hash === "#/" || hash === "") showScreen("home");
-    else if (hash === "#/senin/selesai") showScreen("selesai");
-    else if (hash === "#/rabu/selesai") showScreen("selesai");
-    else {
-      const mSenin = hash.match(/^#\/senin\/(\d+)$/);
-      const mRabu  = hash.match(/^#\/rabu\/(\d+)$/);
-      if (mSenin) {
-        const idNum = parseInt(mSenin[1], 10);
-        if (idNum >= 1 && idNum <= SENIN_EXERCISES.length) { renderExercise(idNum, SENIN_EXERCISES); showScreen("exercise"); }
-        else location.hash = "#/";
-      } else if (mRabu) {
-        const idNum = parseInt(mRabu[1], 10);
-        if (idNum >= 1 && idNum <= RABU_EXERCISES.length) { renderExercise(idNum, RABU_EXERCISES); showScreen("exercise"); }
+    if (hash === "#/" || hash === "") {
+      showScreen("home");
+    } else if (hash === "#/senin/selesai" || hash === "#/rabu/selesai" || hash === "#/jumat/selesai") {
+      showScreen("selesai");
+    } else {
+      const m = hash.match(/^#\/(senin|rabu|jumat)\/(\d+)$/);
+      if (m) {
+        const hari = m[1];
+        const idNum = parseInt(m[2], 10);
+        const exercises = getExercises(hari);
+        if (idNum >= 1 && idNum <= exercises.length) { renderExercise(idNum, exercises); showScreen("exercise"); }
         else location.hash = "#/";
       } else location.hash = "#/";
     }
@@ -404,8 +427,7 @@
 
   document.getElementById("btn-lanjut").addEventListener("click", e => {
     const t = e.currentTarget.dataset.target;
-    const isRabu = location.hash.startsWith("#/rabu/");
-    const hari = isRabu ? "rabu" : "senin";
+    const hari = getHariFromHash();
     if (t === "selesai") { location.hash = "#/" + hari + "/selesai"; return; }
     if (!t) return;
     const content = document.querySelector(".exercise-content");
