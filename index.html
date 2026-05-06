@@ -48,31 +48,27 @@
     .scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
     /* Halaman A */
-    .home-padding { padding: calc(var(--safe-top) + 32px) 24px 48px; }
-    .home-header { margin-bottom: 56px; display: flex; flex-direction: column; gap: 8px; }
+    .home-padding { padding: calc(var(--safe-top) + 32px) 24px 48px; text-align: center; }
+    .home-header { margin-bottom: 32px; display: flex; flex-direction: column; gap: 8px; }
     .home-subtitle { font-size: 13px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-accent); }
     .home-title { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; line-height: 34px; }
-    .section-label { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; line-height: 24px; margin-bottom: 24px; }
     .day-card {
       position: relative; display: flex; align-items: center; justify-content: space-between;
       background: var(--surface); border: 1px solid var(--border-light);
-      border-radius: 24px; padding: 24px; margin-bottom: 16px; min-height: 104px; overflow: hidden;
-      box-shadow: 0 12px 24px rgba(30, 41, 59, 0.03);
+      border-radius: 20px; padding: 16px 20px; margin-bottom: 10px; min-height: 72px; overflow: hidden;
+      box-shadow: 0 8px 16px rgba(30, 41, 59, 0.03);
       transition: opacity 0.2s, transform 0.2s;
       animation: cardIn 380ms cubic-bezier(0.32, 0.72, 0, 1) both;
+      text-align: left;
     }
     .day-card-left { flex: 1; min-width: 0; }
-    .day-card-title { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
-    .day-card-focus { font-size: 16px; color: var(--text-secondary); margin-top: 4px; }
+    .day-card-title { font-size: 18px; font-weight: 600; letter-spacing: -0.5px; }
+    .day-card-focus { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
     .day-card-right { display: flex; flex-direction: column; align-items: flex-end; margin-left: 16px; }
-    .day-card-date { font-size: 32px; font-weight: 600; letter-spacing: -1px; line-height: 36px; font-variant-numeric: tabular-nums; }
-    .day-card-month { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-accent); margin-top: 2px; }
-    .day-card-accent { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); width: 8px; height: 14px; opacity: 0.35; }
-    .day-card-accent::before, .day-card-accent::after { content: ""; position: absolute; right: 0; width: 8px; height: 2px; background: var(--text-primary); border-radius: 2px; }
-    .day-card-accent::before { top: 3px; transform: rotate(40deg); }
-    .day-card-accent::after { bottom: 3px; transform: rotate(-40deg); }
-    .day-card.is-next { border: 1.5px solid var(--primary); background: #F0F4FB; box-shadow: 0 12px 28px rgba(147,165,207,0.18); }
-    .day-card.is-next .day-card-accent { opacity: 0.7; }
+    .day-card-date { font-size: 24px; font-weight: 600; letter-spacing: -1px; line-height: 28px; font-variant-numeric: tabular-nums; }
+    .day-card-month { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-accent); margin-top: 2px; }
+    .day-card-accent { display: none; }
+    .day-card.is-next { border: 1.5px solid var(--primary); background: #F0F4FB; box-shadow: 0 8px 20px rgba(147,165,207,0.18); }
     .day-card.is-past { opacity: 0.4; }
     @keyframes cardIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     .day-card .ripple { position: absolute; border-radius: 50%; background: rgba(147,165,207,0.35); transform: scale(0); animation: rippleAnim 500ms ease-out forwards; pointer-events: none; }
@@ -178,7 +174,6 @@
           <div class="home-subtitle">MEI 2026</div>
           <div class="home-title">Perbaikan Postur<br/>Raihan</div>
         </div>
-        <div class="section-label">Workout</div>
         <div id="day-cards"></div>
       </div>
     </div>
