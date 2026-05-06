@@ -144,13 +144,14 @@
     .video-modal-iframe-wrap iframe { width: 100%; height: 100%; border: 0; }
 
     /* Halaman Selesai */
-    .selesai-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: calc(var(--safe-top) + 24px) 32px 24px; animation: fadeUp 600ms cubic-bezier(0.32, 0.72, 0, 1) both; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .selesai-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: calc(var(--safe-top) + 24px) 32px 24px; }
     .badge-wrap { width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; margin-bottom: 36px; position: relative; }
-    .badge { width: 110px; height: 110px; border-radius: 55px; background: var(--primary); display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 24px rgba(147,165,207,0.35); }
+    .badge { width: 110px; height: 110px; border-radius: 55px; background: var(--primary); display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 24px rgba(147,165,207,0.35); animation: badgeBounce 700ms cubic-bezier(0.34, 1.56, 0.64, 1) both; }
     .badge svg { width: 56px; height: 56px; stroke: #FFF; stroke-width: 3; fill: none; }
-    .ring-pulse { position: absolute; width: 110px; height: 110px; border-radius: 55px; border: 2px solid var(--lavender); animation: pulse 1600ms ease-out infinite; }
-    @keyframes pulse { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.45); opacity: 0; } }
+    .ring-pulse { position: absolute; width: 110px; height: 110px; border-radius: 55px; border: 2px solid var(--lavender); animation: pulse 1600ms ease-out infinite; animation-delay: 700ms; opacity: 0; }
+    @keyframes badgeBounce { 0% { opacity: 0; transform: scale(0.2); } 60% { opacity: 1; } 100% { opacity: 1; transform: scale(1); } }
+    @keyframes pulse { 0% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0; transform: scale(1.45); } }
+    .selesai-body { display: flex; flex-direction: column; align-items: center; opacity: 0; animation: selesaiFadeIn 400ms ease both; animation-delay: 650ms; }
     .selesai-title { font-size: 44px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 10px; }
     .selesai-subtitle { font-size: 16px; font-weight: 500; letter-spacing: -0.2px; color: var(--text-secondary); margin-bottom: 28px; }
     .alhamdulillah-wrap { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
@@ -161,6 +162,7 @@
     .stat-num { font-size: 28px; font-weight: 700; letter-spacing: -0.8px; font-variant-numeric: tabular-nums; }
     .stat-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--text-accent); margin-top: 4px; }
     .stat-divider { width: 1px; height: 36px; background: var(--border-light); margin: 0 24px; }
+    @keyframes selesaiFadeIn { from { opacity: 0; } to { opacity: 1; } }
     .selesai-bottom { padding: 14px 24px calc(var(--safe-bottom) + 16px); }
   </style>
 </head>
@@ -221,17 +223,19 @@
         <div class="ring-pulse"></div>
         <div class="badge"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></div>
       </div>
-      <div class="selesai-title">Selesai!</div>
-      <div class="selesai-subtitle" id="selesai-subtitle">Latihan Senin · Push done ✓</div>
-      <div class="alhamdulillah-wrap">
-        <div class="alhamdulillah-line"></div>
-        <div class="alhamdulillah">Alhamdulillah</div>
-        <div class="alhamdulillah-line"></div>
-      </div>
-      <div class="stats-row">
+      <div class="selesai-body">
+        <div class="selesai-title">Selesai!</div>
+        <div class="selesai-subtitle" id="selesai-subtitle">Latihan Senin · Push done ✓</div>
+        <div class="alhamdulillah-wrap">
+          <div class="alhamdulillah-line"></div>
+          <div class="alhamdulillah">Alhamdulillah</div>
+          <div class="alhamdulillah-line"></div>
+        </div>
+        <div class="stats-row">
         <div class="stat-box"><div class="stat-num" id="selesai-gerakan">4</div><div class="stat-label">GERAKAN</div></div>
         <div class="stat-divider"></div>
         <div class="stat-box"><div class="stat-num" id="selesai-total-set">13</div><div class="stat-label">TOTAL SET</div></div>
+      </div>
       </div>
     </div>
     <div class="selesai-bottom">
@@ -415,6 +419,17 @@
       setTimeout(() => current.classList.remove("active", "exit"), 340);
     }
     next.classList.add("active");
+    if (name === "selesai") {
+      // Re-trigger animasi badge dan body setiap kali halaman selesai dibuka
+      const badge = next.querySelector(".badge");
+      const body = next.querySelector(".selesai-body");
+      const ring = next.querySelector(".ring-pulse");
+      [badge, body, ring].forEach(el => {
+        el.style.animation = "none";
+        el.offsetHeight; // force reflow
+        el.style.animation = "";
+      });
+    }
   }
 
   function handleRoute() {
