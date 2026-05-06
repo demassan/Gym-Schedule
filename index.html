@@ -332,7 +332,7 @@
       const isRabu = location.hash.startsWith("#/rabu/");
       document.querySelector("#screen-selesai .selesai-subtitle").textContent =
         isRabu ? "Latihan Rabu · Legs done ✓" : "Latihan Senin · Push done ✓";
-      document.querySelector("#screen-selesai .stat-num:last-child").textContent = totalSets;
+      document.querySelectorAll("#screen-selesai .stat-num")[1].textContent = totalSets;
     }
     const next = isLast ? null : exercises.find(e => e.id === idNum + 1);
     const btn = document.getElementById("btn-lanjut");
