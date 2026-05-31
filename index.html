@@ -70,6 +70,8 @@
     .day-card-accent { display: none; }
     .day-card.is-next { border: 1.5px solid var(--primary); background: #F0F4FB; box-shadow: 0 8px 20px rgba(147,165,207,0.18); }
     .day-card.is-past { opacity: 0.4; }
+    .day-card-sun { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin-left: 16px; }
+    .day-card-sun svg { width: 32px; height: 32px; }
     @keyframes cardIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     .day-card .ripple { position: absolute; border-radius: 50%; background: rgba(147,165,207,0.35); transform: scale(0); animation: rippleAnim 500ms ease-out forwards; pointer-events: none; }
     @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
@@ -204,7 +206,7 @@
           <img id="video-thumb-img" alt="Video thumbnail" />
           <div class="video-thumb-overlay"></div>
           <div class="play-circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="video-thumb-badge">YouTube Shorts</div>
+          <div class="video-thumb-badge" id="video-thumb-badge">YouTube Shorts</div>
         </div>
         <div class="catatan-label">CATATAN</div>
         <div class="catatan-text" id="catatan-text">—</div>
@@ -232,10 +234,10 @@
           <div class="alhamdulillah-line"></div>
         </div>
         <div class="stats-row">
-        <div class="stat-box"><div class="stat-num" id="selesai-gerakan">4</div><div class="stat-label">GERAKAN</div></div>
-        <div class="stat-divider"></div>
-        <div class="stat-box"><div class="stat-num" id="selesai-total-set">13</div><div class="stat-label">TOTAL SET</div></div>
-      </div>
+          <div class="stat-box"><div class="stat-num" id="selesai-gerakan">4</div><div class="stat-label">GERAKAN</div></div>
+          <div class="stat-divider"></div>
+          <div class="stat-box"><div class="stat-num" id="selesai-total-set">13</div><div class="stat-label">TOTAL SET</div></div>
+        </div>
       </div>
     </div>
     <div class="selesai-bottom">
@@ -253,35 +255,60 @@
 
 <script>
   const PROGRAM_YEAR = 2026, PROGRAM_MONTH = 5, MONTH_LABEL = "Juni";
+
   const WORKOUTS = [
     { id: "senin", day: "Senin", focus: "Push", dates: [1, 8, 15, 22, 29] },
     { id: "rabu",  day: "Rabu",  focus: "Legs", dates: [3, 10, 17, 24] },
     { id: "jumat", day: "Jumat", focus: "Pull", dates: [5, 12, 19, 26] },
   ];
+
   const SENIN_EXERCISES = [
-    { id: 1, name: "Incline Dumbbell Press",  sets: 3, reps: 12, unit: "rep", ytId: "8fXfwG4ftaQ", catatan: "**Atur kursi 30 derajat.**" },
-    { id: 2, name: "Dumbbell Shoulder Press", sets: 3, reps: 12, unit: "rep", ytId: "NQ-JJYay1TM", catatan: "**Jepit tulang belikat ke kursi** agar leher tidak ikut tegang dan memperparah *forward head*." },
-    { id: 3, name: "Lateral Raise",           sets: 3, reps: 15, unit: "rep", ytId: "-_XE4qbV7Yw", catatan: "**Pimpin dengan siku, bukan telapak tangan.**" },
-    { id: 4, name: "Tricep Pushdown (Cable)", sets: 4, reps: 15, unit: "rep", ytId: "XpeCPOHJTK8", catatan: "**Jangan biarkan siku maju-mundur.** Kalau siku bergerak, itu berarti kamu pakai momentum, bukan otot tricep." },
+    { id: 1, name: "Incline Dumbbell Press",  sets: 3, reps: 12, unit: "rep", ytId: "8fXfwG4ftaQ", isShorts: true,  catatan: "**Atur kursi 30 derajat.**" },
+    { id: 2, name: "Dumbbell Shoulder Press", sets: 3, reps: 12, unit: "rep", ytId: "NQ-JJYay1TM", isShorts: true,  catatan: "**Jepit tulang belikat ke kursi** agar leher tidak ikut tegang dan memperparah *forward head*." },
+    { id: 3, name: "Lateral Raise",           sets: 3, reps: 15, unit: "rep", ytId: "-_XE4qbV7Yw", isShorts: true,  catatan: "**Pimpin dengan siku, bukan telapak tangan.**" },
+    { id: 4, name: "Tricep Pushdown (Cable)", sets: 4, reps: 15, unit: "rep", ytId: "XpeCPOHJTK8", isShorts: true,  catatan: "**Jangan biarkan siku maju-mundur.** Kalau siku bergerak, itu berarti kamu pakai momentum, bukan otot tricep." },
   ];
+
   const RABU_EXERCISES = [
-    { id: 1, name: "Goblet Squat",       sets: 3, reps: 12, unit: "rep",   ytId: "lRYBbchqxtI", catatan: "**Dumbbell tempel di dada.** Jangan biarkan punggung melengkung ke depan." },
-    { id: 2, name: "Leg Press",          sets: 3, reps: 12, unit: "rep",   ytId: "_bkqGYB-fWI", catatan: "**Jangan meluruskan kaki sampai lutut terkunci.**" },
-    { id: 3, name: "Cable Crunch",       sets: 3, reps: 15, unit: "rep",   ytId: "K2m0jj6RfYg", catatan: "**Jangan menarik pakai lengan.** Pakai otot perut." },
-    { id: 4, name: "Face Pulls (Cable)", sets: 3, reps: 15, unit: "rep",   ytId: "zi7waeqXpzw", catatan: "**Gerakan mengkunci postur, harus maksimal!**" },
+    { id: 1, name: "Goblet Squat",       sets: 3, reps: 12, unit: "rep", ytId: "lRYBbchqxtI", isShorts: true,  catatan: "**Dumbbell tempel di dada.** Jangan biarkan punggung melengkung ke depan." },
+    { id: 2, name: "Leg Press",          sets: 3, reps: 12, unit: "rep", ytId: "_bkqGYB-fWI", isShorts: true,  catatan: "**Jangan meluruskan kaki sampai lutut terkunci.**" },
+    { id: 3, name: "Cable Crunch",       sets: 3, reps: 15, unit: "rep", ytId: "K2m0jj6RfYg", isShorts: true,  catatan: "**Jangan menarik pakai lengan.** Pakai otot perut." },
+    { id: 4, name: "Face Pulls (Cable)", sets: 3, reps: 15, unit: "rep", ytId: "zi7waeqXpzw", isShorts: true,  catatan: "**Gerakan mengkunci postur, harus maksimal!**" },
   ];
+
   const JUMAT_EXERCISES = [
-    { id: 1, name: "Lat Pulldown",        sets: 3, reps: 12, unit: "rep", ytId: "Z4zHIds5nDk", catatan: "**Tarik dengan siku, bukan telapak tangan.** Jangan tarik sampai ke perut, cukup sampai atas dada." },
-    { id: 2, name: "Seated Cable Row",    sets: 3, reps: 12, unit: "rep", ytId: "hnNjcQI9ZMU", catatan: "**Lakukan semaksimal mungkin!**" },
-    { id: 3, name: "Dumbbell Bicep Curl", sets: 4, reps: 12, unit: "rep", ytId: "pl3z_AihNzk", catatan: "**Jangan mengayunkan pinggang.** Jika beban 5kg membuat badanmu goyang, turunkan beban." },
-    { id: 4, name: "Hammer Curl",         sets: 3, reps: 15, unit: "rep", ytId: "8H5oWMNWWeQ", catatan: "**Lakukan semaksimal mungkin!**" },
+    { id: 1, name: "Lat Pulldown",        sets: 3, reps: 12, unit: "rep", ytId: "Z4zHIds5nDk", isShorts: true,  catatan: "**Tarik dengan siku, bukan telapak tangan.** Jangan tarik sampai ke perut, cukup sampai atas dada." },
+    { id: 2, name: "Seated Cable Row",    sets: 3, reps: 12, unit: "rep", ytId: "hnNjcQI9ZMU", isShorts: true,  catatan: "**Lakukan semaksimal mungkin!**" },
+    { id: 3, name: "Dumbbell Bicep Curl", sets: 4, reps: 12, unit: "rep", ytId: "pl3z_AihNzk", isShorts: true,  catatan: "**Jangan mengayunkan pinggang.** Jika beban 5kg membuat badanmu goyang, turunkan beban." },
+    { id: 4, name: "Hammer Curl",         sets: 3, reps: 15, unit: "rep", ytId: "8H5oWMNWWeQ", isShorts: true,  catatan: "**Lakukan semaksimal mungkin!**" },
+  ];
+
+  const HARIAN_EXERCISES = [
+    { id: 1, name: "Chin Tuck",              sets: 3, reps: 10,  unit: "rep",  ytId: "ZRUT5aucU6Y", isShorts: true,  catatan: "**Geser dagu lurus ke belakang, bukan menunduk.** Tahan 5 detik setiap rep. Rasakan tekanan lembut di depan leher, bukan di tenggorokan." },
+    { id: 2, name: "Wall Slides",            sets: 3, reps: 10,  unit: "rep",  ytId: "x4Oht5bztsk", isShorts: true,  catatan: "**Bokong, punggung atas, kepala, dan punggung tangan harus selalu menempel tembok.** Jika ada bagian yang terangkat, turunkan beban gerakan." },
+    { id: 3, name: "Doorway Chest Stretch",  sets: 3, reps: 30,  unit: "dtk",  ytId: "0wU6V78E_lM", isShorts: true,  catatan: "**Siku setinggi bahu, jangan lebih tinggi.** Condong perlahan — rasakan tarikan di dada, bukan nyeri di bahu." },
+    { id: 4, name: "Cat-Cow",                sets: 3, reps: 10,  unit: "rep",  ytId: "LIVJZZyZ2qM", isShorts: false, catatan: "**Ikuti ritme napas, jangan terburu-buru.** Tarik napas saat lengkung ke bawah, buang napas saat bungkuk ke atas. Ini mobilitas, bukan kecepatan." },
+    { id: 5, name: "Dead Hang",              sets: 3, reps: 30,  unit: "dtk",  ytId: "fq9gDvNZQ2c", isShorts: true,  catatan: "**Rilekskan bahu sepenuhnya — biarkan gravitasi yang bekerja.** Jangan aktif mengangkat atau menahan bahu. Bernafas normal selama hang." },
   ];
 
   const SELESAI_INFO = {
-    senin: { subtitle: "Latihan Senin · Push done ✓" },
-    rabu:  { subtitle: "Latihan Rabu · Legs done ✓"  },
-    jumat: { subtitle: "Latihan Jumat · Pull done ✓"  },
+    senin:  { subtitle: "Latihan Senin · Push done ✓" },
+    rabu:   { subtitle: "Latihan Rabu · Legs done ✓"  },
+    jumat:  { subtitle: "Latihan Jumat · Pull done ✓"  },
+    harian: { subtitle: "Gerakan Harian · Selesai ✓"  },
   };
+
+  const SUN_ICON = `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="var(--text-accent)" stroke-width="2" stroke-linecap="round">
+    <circle cx="16" cy="16" r="5.5"/>
+    <line x1="16" y1="3" x2="16" y2="6.5"/>
+    <line x1="16" y1="25.5" x2="16" y2="29"/>
+    <line x1="3" y1="16" x2="6.5" y2="16"/>
+    <line x1="25.5" y1="16" x2="29" y2="16"/>
+    <line x1="6.93" y1="6.93" x2="9.4" y2="9.4"/>
+    <line x1="22.6" y1="22.6" x2="25.07" y2="25.07"/>
+    <line x1="25.07" y1="6.93" x2="22.6" y2="9.4"/>
+    <line x1="9.4" y1="22.6" x2="6.93" y2="25.07"/>
+  </svg>`;
 
   function getUpcomingDate(dates) {
     const now = new Date();
@@ -306,7 +333,6 @@
     const now = new Date();
     const todayTs = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
 
-    // Cari kartu terdekat (is-next)
     let closestDiff = Infinity, closestId = null;
     WORKOUTS.forEach(w => {
       const d = getUpcomingDate(w.dates);
@@ -315,7 +341,7 @@
       if (diff >= 0 && diff < closestDiff) { closestDiff = diff; closestId = w.id; }
     });
 
-    document.getElementById("day-cards").innerHTML = WORKOUTS.map((w, idx) => {
+    const gymCards = WORKOUTS.map((w, idx) => {
       const upcoming = String(getUpcomingDate(w.dates)).padStart(2, "0");
       const upcomingTs = new Date(PROGRAM_YEAR, PROGRAM_MONTH, parseInt(upcoming, 10)).getTime();
       const isPast = upcomingTs < todayTs;
@@ -336,6 +362,18 @@
         </div>`;
     }).join("");
 
+    const harianCard = `
+      <div class="day-card" data-id="harian" style="animation-delay:${WORKOUTS.length * 80}ms">
+        <div class="day-card-left">
+          <div class="day-card-title">Gerakan Harian</div>
+          <div class="day-card-focus">Postur & Mobilitas</div>
+        </div>
+        <div class="day-card-sun">${SUN_ICON}</div>
+        <div class="day-card-accent"></div>
+      </div>`;
+
+    document.getElementById("day-cards").innerHTML = gymCards + harianCard;
+
     document.querySelectorAll(".day-card").forEach(el => {
       el.addEventListener("click", e => {
         const rect = el.getBoundingClientRect();
@@ -352,7 +390,7 @@
           if (id === "senin") location.hash = "#/senin/1";
           else if (id === "rabu") location.hash = "#/rabu/1";
           else if (id === "jumat") location.hash = "#/jumat/1";
-          else alert("Halaman " + id + " belum tersedia.");
+          else if (id === "harian") location.hash = "#/harian/1";
         }, 120);
       });
     });
@@ -361,6 +399,7 @@
   function getExercises(hari) {
     if (hari === "rabu") return RABU_EXERCISES;
     if (hari === "jumat") return JUMAT_EXERCISES;
+    if (hari === "harian") return HARIAN_EXERCISES;
     return SENIN_EXERCISES;
   }
 
@@ -368,6 +407,7 @@
     const h = location.hash;
     if (h.startsWith("#/rabu/")) return "rabu";
     if (h.startsWith("#/jumat/")) return "jumat";
+    if (h.startsWith("#/harian/")) return "harian";
     return "senin";
   }
 
@@ -383,6 +423,7 @@
     document.getElementById("chip-unit").textContent = ex.unit || "rep";
     document.getElementById("video-thumb-img").src = "https://img.youtube.com/vi/" + ex.ytId + "/hqdefault.jpg";
     document.getElementById("video-thumb").dataset.ytId = ex.ytId;
+    document.getElementById("video-thumb-badge").textContent = ex.isShorts ? "YouTube Shorts" : "YouTube";
     document.getElementById("catatan-text").innerHTML = parseFormatted(ex.catatan);
     const isLast = idNum === total;
     if (isLast) {
@@ -417,13 +458,12 @@
     }
     next.classList.add("active");
     if (name === "selesai") {
-      // Re-trigger animasi badge dan body setiap kali halaman selesai dibuka
       const badge = next.querySelector(".badge");
       const body = next.querySelector(".selesai-body");
       const ring = next.querySelector(".ring-pulse");
       [badge, body, ring].forEach(el => {
         el.style.animation = "none";
-        el.offsetHeight; // force reflow
+        el.offsetHeight;
         el.style.animation = "";
       });
     }
@@ -433,17 +473,28 @@
     const hash = location.hash || "#/";
     if (hash === "#/" || hash === "") {
       showScreen("home");
-    } else if (hash === "#/senin/selesai" || hash === "#/rabu/selesai" || hash === "#/jumat/selesai") {
+    } else if (
+      hash === "#/senin/selesai" ||
+      hash === "#/rabu/selesai" ||
+      hash === "#/jumat/selesai" ||
+      hash === "#/harian/selesai"
+    ) {
       showScreen("selesai");
     } else {
-      const m = hash.match(/^#\/(senin|rabu|jumat)\/(\d+)$/);
+      const m = hash.match(/^#\/(senin|rabu|jumat|harian)\/(\d+)$/);
       if (m) {
         const hari = m[1];
         const idNum = parseInt(m[2], 10);
         const exercises = getExercises(hari);
-        if (idNum >= 1 && idNum <= exercises.length) { renderExercise(idNum, exercises); showScreen("exercise"); }
-        else location.hash = "#/";
-      } else location.hash = "#/";
+        if (idNum >= 1 && idNum <= exercises.length) {
+          renderExercise(idNum, exercises);
+          showScreen("exercise");
+        } else {
+          location.hash = "#/";
+        }
+      } else {
+        location.hash = "#/";
+      }
     }
   }
 
