@@ -300,22 +300,22 @@
 
   const SENIN_EXERCISES = [
     {
-      id: 1, name: "Flat Dumbbell Press", sets: 3, reps: 10, unit: "rep", ytId: "", istirahat: "2 menit",
+      id: 1, name: "Flat Dumbbell Press", sets: 3, reps: 10, unit: "rep", ytId: "Gf65Yy0-wGI", isShorts: true, istirahat: "2 menit",
       tujuan: "Pondasi kekuatan dan massa otot dada keseluruhan.",
       kesalahan: "Siku membuka lebar 90° sejajar bahu — bikin cedera. Siku harus masuk membentuk sudut 45–60° dari tubuh."
     },
     {
-      id: 2, name: "Lat Pulldown", sets: 3, reps: 12, unit: "rep", ytId: "", istirahat: "90 dtk",
+      id: 2, name: "Lat Pulldown", sets: 3, reps: 12, unit: "rep", ytId: "Z4zHIds5nDk", isShorts: true, istirahat: "90 dtk",
       tujuan: "Melebarkan punggung samping (V-Taper) agar kemeja pas di badan.",
       kesalahan: "Mengayunkan badan ke belakang memakai momentum. Badan harus tetap tegak dan stabil."
     },
     {
-      id: 3, name: "Seated Face Pull", sets: 3, reps: 15, unit: "rep", ytId: "", istirahat: "60–90 dtk",
+      id: 3, name: "Seated Face Pull", sets: 3, reps: 15, unit: "rep", ytId: "hyBmEmv03_U", isShorts: false, istirahat: "60–90 dtk",
       tujuan: "Mengisolasi bahu belakang dan memperbaiki postur bahu bungkuk.",
       kesalahan: "Beban terlalu berat hingga badan tertarik maju, atau bahu naik ke arah kuping. Duduk tegak dan kunci bahu di bawah."
     },
     {
-      id: 4, name: "Dumbbell Hammer Curl", sets: 3, reps: 12, unit: "rep", ytId: "", istirahat: "60 dtk",
+      id: 4, name: "Dumbbell Hammer Curl", sets: 3, reps: 12, unit: "rep", ytId: "8H5oWMNWWeQ", isShorts: true, istirahat: "60 dtk",
       tujuan: "Menebalkan lengan bagian samping dan lengan bawah.",
       kesalahan: "Siku bergerak maju-mundur atau badan ikut mengayun. Siku wajib terkunci rapat di samping badan."
     },
@@ -488,6 +488,7 @@
     document.getElementById("video-placeholder").style.display = hasVideo ? "none" : "flex";
     document.getElementById("video-thumb-overlay").style.display = hasVideo ? "block" : "none";
     document.getElementById("video-play-circle").style.display = hasVideo ? "flex" : "none";
+    document.getElementById("video-thumb-badge").textContent = ex.isShorts ? "YouTube Shorts" : "YouTube";
     document.getElementById("video-thumb-badge").style.display = hasVideo ? "block" : "none";
     document.getElementById("video-thumb").dataset.ytId = ex.ytId || "";
     document.getElementById("video-thumb").style.cursor = hasVideo ? "pointer" : "default";
