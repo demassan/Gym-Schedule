@@ -29,6 +29,9 @@
       --text-primary: #1E293B;
       --text-secondary: #64748B;
       --text-accent: #7A8CBA;
+      --danger: #EF4444;
+      --danger-bg: rgba(239, 68, 68, 0.03);
+      --danger-border: rgba(239, 68, 68, 0.18);
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
@@ -47,7 +50,7 @@
     #screen-home { transform: translateX(0); opacity: 1; }
     .scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
-    /* Halaman A */
+    /* Halaman Home */
     .home-padding { padding: calc(var(--safe-top) + 32px) 24px 48px; text-align: center; }
     .home-header { margin-bottom: 32px; display: flex; flex-direction: column; gap: 8px; }
     .home-subtitle { font-size: 13px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-accent); }
@@ -70,13 +73,11 @@
     .day-card-accent { display: none; }
     .day-card.is-next { border: 1.5px solid var(--primary); background: #F0F4FB; box-shadow: 0 8px 20px rgba(147,165,207,0.18); }
     .day-card.is-past { opacity: 0.4; }
-    .day-card-sun { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin-left: 16px; }
-    .day-card-sun svg { width: 32px; height: 32px; }
     @keyframes cardIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     .day-card .ripple { position: absolute; border-radius: 50%; background: rgba(147,165,207,0.35); transform: scale(0); animation: rippleAnim 500ms ease-out forwards; pointer-events: none; }
     @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
 
-    /* Halaman B */
+    /* Halaman Exercise */
     .top-bar { padding: calc(var(--safe-top) + 12px) 24px 8px; display: flex; align-items: center; justify-content: space-between; }
     .icon-btn { width: 40px; height: 40px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; }
     .icon-btn:active { opacity: 0.7; }
@@ -88,21 +89,42 @@
     .exercise-content.fade-in.playing { opacity: 1; transform: translateX(0); transition: opacity 220ms ease, transform 220ms ease; }
     .exercise-label { font-size: 12px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-accent); margin-bottom: 8px; }
     .exercise-name { font-size: 30px; font-weight: 700; letter-spacing: -0.8px; line-height: 38px; margin-bottom: 20px; }
-    .rep-chip { display: inline-flex; align-items: baseline; background: var(--surface); border: 1px solid var(--border-light); padding: 10px 18px; border-radius: 999px; margin-bottom: 28px; }
+
+    /* Chip Row */
+    .chip-row { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; align-items: center; }
+    .rep-chip { display: inline-flex; align-items: baseline; background: var(--surface); border: 1px solid var(--border-light); padding: 10px 18px; border-radius: 999px; }
     .rep-chip-num { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; font-variant-numeric: tabular-nums; }
     .rep-chip-mute { font-size: 13px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.5px; margin: 0 4px; }
-    .video-thumb { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; background: var(--surface); margin-bottom: 32px; cursor: pointer; transition: opacity 0.2s; }
+    .rest-chip { display: inline-flex; align-items: center; gap: 5px; background: var(--surface); border: 1px solid var(--border-light); padding: 10px 14px; border-radius: 999px; }
+    .rest-chip-icon { width: 14px; height: 14px; stroke: var(--text-accent); flex-shrink: 0; fill: none; }
+    .rest-chip-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.3px; }
+    .rest-chip-val { font-size: 13px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.2px; margin-left: 2px; font-variant-numeric: tabular-nums; }
+
+    /* Video Thumb */
+    .video-thumb { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; background: var(--surface); margin-bottom: 28px; cursor: pointer; transition: opacity 0.2s; }
     .video-thumb:active { opacity: 0.85; }
     .video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .video-thumb-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.25); }
     .play-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; border-radius: 32px; background: rgba(15, 23, 42, 0.85); display: flex; align-items: center; justify-content: center; }
     .play-circle svg { width: 26px; height: 26px; fill: #FFF; margin-left: 3px; }
     .video-thumb-badge { position: absolute; bottom: 12px; left: 12px; padding: 4px 10px; background: rgba(255,255,255,0.92); border-radius: 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
-    .catatan-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-accent); margin-bottom: 10px; }
-    .catatan-text { font-size: 17px; line-height: 26px; color: var(--text-secondary); letter-spacing: -0.1px; }
-    .catatan-text b { font-weight: 700; color: var(--text-primary); }
-    .catatan-text i { font-style: italic; }
+    .video-placeholder { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: var(--surface); }
+    .video-placeholder svg { width: 36px; height: 36px; stroke: var(--text-accent); opacity: 0.35; fill: none; }
+    .video-placeholder span { font-size: 12px; font-weight: 600; color: var(--text-accent); opacity: 0.55; letter-spacing: 0.5px; }
 
+    /* Info Cards */
+    .info-cards { display: flex; flex-direction: column; gap: 10px; }
+    .info-card { display: flex; align-items: flex-start; gap: 12px; background: var(--surface); border: 1px solid var(--border-light); border-radius: 16px; padding: 14px 16px; }
+    .info-card-danger { background: var(--danger-bg); border-color: var(--danger-border); }
+    .info-card-icon { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .info-card-icon svg { width: 15px; height: 15px; stroke: var(--text-accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .info-card-danger .info-card-icon svg { stroke: var(--danger); }
+    .info-card-content { flex: 1; min-width: 0; }
+    .info-card-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-accent); margin-bottom: 6px; }
+    .info-card-danger .info-card-label { color: var(--danger); }
+    .info-card-text { font-size: 15px; line-height: 23px; color: var(--text-secondary); letter-spacing: -0.1px; }
+
+    /* Bottom Bar */
     .bottom-bar { position: absolute; left: 0; right: 0; bottom: 0; background: var(--background); padding: 14px 24px calc(var(--safe-bottom) + 16px); border-top: 1px solid var(--border-light); }
     .lanjut-btn { width: 100%; padding: 18px 20px; border-radius: 16px; background: var(--text-primary); color: #FFF; font-size: 15px; font-weight: 600; letter-spacing: -0.2px; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .lanjut-btn:active { opacity: 0.85; transform: scale(0.99); }
@@ -118,31 +140,14 @@
       display: flex; align-items: center; justify-content: center;
       transition: background 300ms ease;
     }
-    .video-modal.open {
-      background: rgba(0,0,0,0.65);
-      pointer-events: all;
-    }
+    .video-modal.open { background: rgba(0,0,0,0.65); pointer-events: all; }
     .video-sheet {
-      width: 80%; aspect-ratio: 16/9;
-      background: #000;
-      border-radius: 16px;
-      overflow: hidden;
+      width: 80%; aspect-ratio: 16/9; background: #000; border-radius: 16px; overflow: hidden;
       opacity: 0; transform: scale(0.92);
       transition: opacity 300ms ease, transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
     }
     .video-modal.open .video-sheet { opacity: 1; transform: scale(1); }
-    .video-modal-close {
-      position: absolute; top: calc(var(--safe-top) + 16px); right: 16px;
-      width: 44px; height: 44px; border-radius: 22px;
-      background: rgba(255,255,255,0.15);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 10;
-    }
-    .video-modal-close svg { width: 26px; height: 26px; stroke: #FFF; }
-    .video-modal-iframe-wrap {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
+    .video-modal-iframe-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
     .video-modal-iframe-wrap iframe { width: 100%; height: 100%; border: 0; }
 
     /* Halaman Selesai */
@@ -170,12 +175,13 @@
 </head>
 <body>
 <div class="app">
-  <!-- Halaman A -->
+
+  <!-- Halaman Home -->
   <div class="screen active" id="screen-home">
     <div class="scroll-area">
       <div class="home-padding">
         <div class="home-header">
-          <div class="home-subtitle">JUNI 2026</div>
+          <div class="home-subtitle">JULI 2026</div>
           <div class="home-title">Perbaikan Postur<br/>Raihan</div>
         </div>
         <div id="day-cards"></div>
@@ -183,7 +189,7 @@
     </div>
   </div>
 
-  <!-- Halaman Gerakan -->
+  <!-- Halaman Exercise -->
   <div class="screen" id="screen-exercise">
     <div class="top-bar">
       <button class="icon-btn" id="btn-back" aria-label="Kembali">
@@ -195,21 +201,50 @@
       <div class="exercise-content">
         <div class="exercise-label" id="exercise-label">GERAKAN 1</div>
         <div class="exercise-name" id="exercise-name">—</div>
-        <div class="rep-chip">
-          <span class="rep-chip-num" id="chip-sets">3</span>
-          <span class="rep-chip-mute">set</span>
-          <span class="rep-chip-num">×</span>
-          <span class="rep-chip-num" id="chip-reps">12</span>
-          <span class="rep-chip-mute" id="chip-unit">rep</span>
+        <div class="chip-row">
+          <div class="rep-chip">
+            <span class="rep-chip-num" id="chip-sets">3</span>
+            <span class="rep-chip-mute">set</span>
+            <span class="rep-chip-num">×</span>
+            <span class="rep-chip-num" id="chip-reps">10</span>
+            <span class="rep-chip-mute" id="chip-unit">rep</span>
+          </div>
+          <div class="rest-chip">
+            <svg class="rest-chip-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            <span class="rest-chip-label">istirahat</span>
+            <span class="rest-chip-val" id="chip-istirahat">2 menit</span>
+          </div>
         </div>
         <div class="video-thumb" id="video-thumb">
           <img id="video-thumb-img" alt="Video thumbnail" />
-          <div class="video-thumb-overlay"></div>
-          <div class="play-circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="video-thumb-badge" id="video-thumb-badge">YouTube Shorts</div>
+          <div class="video-placeholder" id="video-placeholder">
+            <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M10 8l6 4-6 4V8z"/></svg>
+            <span>Video segera hadir</span>
+          </div>
+          <div class="video-thumb-overlay" id="video-thumb-overlay"></div>
+          <div class="play-circle" id="video-play-circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="video-thumb-badge" id="video-thumb-badge">YouTube</div>
         </div>
-        <div class="catatan-label">CATATAN</div>
-        <div class="catatan-text" id="catatan-text">—</div>
+        <div class="info-cards">
+          <div class="info-card">
+            <div class="info-card-icon">
+              <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5"/><circle cx="8" cy="8" r="2.5" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <div class="info-card-content">
+              <div class="info-card-label">Tujuan</div>
+              <div class="info-card-text" id="tujuan-text">—</div>
+            </div>
+          </div>
+          <div class="info-card info-card-danger">
+            <div class="info-card-icon">
+              <svg viewBox="0 0 16 16"><path d="M8 2.5L14 13.5H2L8 2.5z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <div class="info-card-content">
+              <div class="info-card-label">Kesalahan Fatal</div>
+              <div class="info-card-text" id="kesalahan-text">—</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="bottom-bar">
@@ -227,7 +262,7 @@
       </div>
       <div class="selesai-body">
         <div class="selesai-title">Selesai!</div>
-        <div class="selesai-subtitle" id="selesai-subtitle">Latihan Senin · Push done ✓</div>
+        <div class="selesai-subtitle" id="selesai-subtitle">Latihan Senin · Upper A done ✓</div>
         <div class="alhamdulillah-wrap">
           <div class="alhamdulillah-line"></div>
           <div class="alhamdulillah">Alhamdulillah</div>
@@ -236,7 +271,7 @@
         <div class="stats-row">
           <div class="stat-box"><div class="stat-num" id="selesai-gerakan">4</div><div class="stat-label">GERAKAN</div></div>
           <div class="stat-divider"></div>
-          <div class="stat-box"><div class="stat-num" id="selesai-total-set">13</div><div class="stat-label">TOTAL SET</div></div>
+          <div class="stat-box"><div class="stat-num" id="selesai-total-set">12</div><div class="stat-label">TOTAL SET</div></div>
         </div>
       </div>
     </div>
@@ -251,82 +286,121 @@
       <div class="video-modal-iframe-wrap" id="iframe-wrap"></div>
     </div>
   </div>
-</div>
 
+</div>
 <script>
-  const PROGRAM_YEAR = 2026, PROGRAM_MONTH = 5, MONTH_LABEL = "Juni";
+  const PROGRAM_YEAR = 2026, PROGRAM_MONTH = 6, MONTH_LABEL = "Juli";
 
   const WORKOUTS = [
-    { id: "senin", day: "Senin", focus: "Push", dates: [1, 8, 15, 22, 29] },
-    { id: "rabu",  day: "Rabu",  focus: "Legs", dates: [3, 10, 17, 24] },
-    { id: "jumat", day: "Jumat", focus: "Pull", dates: [5, 12, 19, 26] },
+    { id: "senin",  day: "Senin",  focus: "Upper A", dates: [6, 13, 20, 27] },
+    { id: "selasa", day: "Selasa", focus: "Lower A", dates: [7, 14, 21, 28] },
+    { id: "kamis",  day: "Kamis",  focus: "Upper B", dates: [2, 9, 16, 23, 30] },
+    { id: "jumat",  day: "Jumat",  focus: "Lower B", dates: [3, 10, 17, 24, 31] },
   ];
 
   const SENIN_EXERCISES = [
-    { id: 1, name: "Incline Dumbbell Press",  sets: 3, reps: 12, unit: "rep", ytId: "8fXfwG4ftaQ", isShorts: true,  catatan: "**Atur kursi 30 derajat.**" },
-    { id: 2, name: "Dumbbell Shoulder Press", sets: 3, reps: 12, unit: "rep", ytId: "NQ-JJYay1TM", isShorts: true,  catatan: "**Jepit tulang belikat ke kursi** agar leher tidak ikut tegang dan memperparah *forward head*." },
-    { id: 3, name: "Lateral Raise",           sets: 3, reps: 15, unit: "rep", ytId: "-_XE4qbV7Yw", isShorts: true,  catatan: "**Pimpin dengan siku, bukan telapak tangan.**" },
-    { id: 4, name: "Tricep Pushdown (Cable)", sets: 4, reps: 15, unit: "rep", ytId: "XpeCPOHJTK8", isShorts: true,  catatan: "**Jangan biarkan siku maju-mundur.** Kalau siku bergerak, itu berarti kamu pakai momentum, bukan otot tricep." },
+    {
+      id: 1, name: "Flat Dumbbell Press", sets: 3, reps: 10, unit: "rep", ytId: "", istirahat: "2 menit",
+      tujuan: "Pondasi kekuatan dan massa otot dada keseluruhan.",
+      kesalahan: "Siku membuka lebar 90° sejajar bahu — bikin cedera. Siku harus masuk membentuk sudut 45–60° dari tubuh."
+    },
+    {
+      id: 2, name: "Lat Pulldown", sets: 3, reps: 12, unit: "rep", ytId: "", istirahat: "90 dtk",
+      tujuan: "Melebarkan punggung samping (V-Taper) agar kemeja pas di badan.",
+      kesalahan: "Mengayunkan badan ke belakang memakai momentum. Badan harus tetap tegak dan stabil."
+    },
+    {
+      id: 3, name: "Seated Face Pull", sets: 3, reps: 15, unit: "rep", ytId: "", istirahat: "60–90 dtk",
+      tujuan: "Mengisolasi bahu belakang dan memperbaiki postur bahu bungkuk.",
+      kesalahan: "Beban terlalu berat hingga badan tertarik maju, atau bahu naik ke arah kuping. Duduk tegak dan kunci bahu di bawah."
+    },
+    {
+      id: 4, name: "Dumbbell Hammer Curl", sets: 3, reps: 12, unit: "rep", ytId: "", istirahat: "60 dtk",
+      tujuan: "Menebalkan lengan bagian samping dan lengan bawah.",
+      kesalahan: "Siku bergerak maju-mundur atau badan ikut mengayun. Siku wajib terkunci rapat di samping badan."
+    },
   ];
 
-  const RABU_EXERCISES = [
-    { id: 1, name: "Goblet Squat",       sets: 3, reps: 12, unit: "rep", ytId: "lRYBbchqxtI", isShorts: true,  catatan: "**Dumbbell tempel di dada.** Jangan biarkan punggung melengkung ke depan." },
-    { id: 2, name: "Leg Press",          sets: 3, reps: 12, unit: "rep", ytId: "_bkqGYB-fWI", isShorts: true,  catatan: "**Jangan meluruskan kaki sampai lutut terkunci.**" },
-    { id: 3, name: "Cable Crunch",       sets: 3, reps: 15, unit: "rep", ytId: "K2m0jj6RfYg", isShorts: true,  catatan: "**Jangan menarik pakai lengan.** Pakai otot perut." },
-    { id: 4, name: "Face Pulls (Cable)", sets: 3, reps: 15, unit: "rep", ytId: "zi7waeqXpzw", isShorts: true,  catatan: "**Gerakan mengkunci postur, harus maksimal!**" },
+  const SELASA_EXERCISES = [
+    {
+      id: 1, name: "Leg Press", sets: 3, reps: 10, unit: "rep", ytId: "", istirahat: "2 menit",
+      tujuan: "Melatih paha depan secara maksimal dengan punggung tersangga aman.",
+      kesalahan: "Menurunkan beban terlalu dalam sampai pantat terangkat dari kursi, atau meluruskan lutut sampai mengunci kaku."
+    },
+    {
+      id: 2, name: "Dumbbell Romanian Deadlift", sets: 3, reps: 12, unit: "rep", ytId: "", istirahat: "2 menit",
+      tujuan: "Memperkuat paha belakang & bokong untuk menarik panggul ke posisi netral.",
+      kesalahan: "Punggung melengkung atau bungkuk saat menurunkan beban. Punggung wajib lurus, gerakan berpusat pada pinggul yang didorong ke belakang."
+    },
+    {
+      id: 3, name: "Leg Press Calf Raise", sets: 3, reps: 20, unit: "rep", ytId: "", istirahat: "60 dtk",
+      tujuan: "Melatih otot betis bagian luar memanfaatkan mesin leg press.",
+      kesalahan: "Gerakan memantul terlalu cepat. Harus ada jeda 1 detik di bawah saat otot betis meregang, baru jinjit."
+    },
+    {
+      id: 4, name: "Reverse Crunch", sets: 3, reps: 15, unit: "rep", ytId: "", istirahat: "60 dtk",
+      tujuan: "Melatih perut bawah untuk memaksa panggul kembali lurus secara aktif.",
+      kesalahan: "Mengayunkan kaki memakai momentum. Gunakan kekuatan perut bawah untuk mengangkat pinggul sedikit dari lantai."
+    },
+  ];
+
+  const KAMIS_EXERCISES = [
+    {
+      id: 1, name: "Incline Dumbbell Press (30°)", sets: 3, reps: 10, unit: "rep", ytId: "", istirahat: "2 menit",
+      tujuan: "Mengisi dada bagian atas agar kemeja terlihat bidang dan penuh.",
+      kesalahan: "Sudut kursi terlalu tinggi (>45°) sehingga beban pindah ke bahu depan, bukan dada atas."
+    },
+    {
+      id: 2, name: "Seated Cable Row", sets: 3, reps: 12, unit: "rep", ytId: "", istirahat: "90 dtk",
+      tujuan: "Menebalkan punggung tengah agar postur berdiri tegap.",
+      kesalahan: "Bahu ikut bungkuk ke depan saat melepaskan beban. Dada harus tetap tegak, rasakan belikat saling menjepit di belakang."
+    },
+    {
+      id: 3, name: "Seated Face Pull", sets: 3, reps: 15, unit: "rep", ytId: "", istirahat: "60–90 dtk",
+      tujuan: "Menjaga frekuensi stimulasi bahu belakang agar perbaikan postur lebih cepat.",
+      kesalahan: "Kepala maju ke depan menjemput tali kabel. Kepala harus diam, tali yang ditarik ke arah dahi."
+    },
+    {
+      id: 4, name: "Tricep Rope Pushdown", sets: 3, reps: 12, unit: "rep", ytId: "", istirahat: "60 dtk",
+      tujuan: "Mengisolasi otot tricep agar lengan baju bagian belakang terisi padat.",
+      kesalahan: "Siku membuka ke samping atau ikut bergerak naik-turun. Siku harus diam dan menempel di sisi rusuk."
+    },
   ];
 
   const JUMAT_EXERCISES = [
-    { id: 1, name: "Lat Pulldown",        sets: 3, reps: 12, unit: "rep", ytId: "Z4zHIds5nDk", isShorts: true,  catatan: "**Tarik dengan siku, bukan telapak tangan.** Jangan tarik sampai ke perut, cukup sampai atas dada." },
-    { id: 2, name: "Seated Cable Row",    sets: 3, reps: 12, unit: "rep", ytId: "hnNjcQI9ZMU", isShorts: true,  catatan: "**Lakukan semaksimal mungkin!**" },
-    { id: 3, name: "Dumbbell Bicep Curl", sets: 4, reps: 12, unit: "rep", ytId: "pl3z_AihNzk", isShorts: true,  catatan: "**Jangan mengayunkan pinggang.** Jika beban 5kg membuat badanmu goyang, turunkan beban." },
-    { id: 4, name: "Hammer Curl",         sets: 3, reps: 15, unit: "rep", ytId: "8H5oWMNWWeQ", isShorts: true,  catatan: "**Lakukan semaksimal mungkin!**" },
-  ];
-
-  const HARIAN_EXERCISES = [
-    { id: 1, name: "Chin Tuck",              sets: 3, reps: 10,  unit: "rep",  ytId: "ZRUT5aucU6Y", isShorts: true,  catatan: "**Geser dagu lurus ke belakang, bukan menunduk.** Tahan 5 detik setiap rep. Rasakan tekanan lembut di depan leher, bukan di tenggorokan." },
-    { id: 2, name: "Wall Slides",            sets: 3, reps: 10,  unit: "rep",  ytId: "x4Oht5bztsk", isShorts: true,  catatan: "**Bokong, punggung atas, kepala, dan punggung tangan harus selalu menempel tembok.** Jika ada bagian yang terangkat, turunkan beban gerakan." },
-    { id: 3, name: "Doorway Chest Stretch",  sets: 3, reps: 30,  unit: "dtk",  ytId: "0wU6V78E_lM", isShorts: true,  catatan: "**Siku setinggi bahu, jangan lebih tinggi.** Condong perlahan — rasakan tarikan di dada, bukan nyeri di bahu." },
-    { id: 4, name: "Cat-Cow",                sets: 3, reps: 10,  unit: "rep",  ytId: "LIVJZZyZ2qM", isShorts: false, catatan: "**Ikuti ritme napas, jangan terburu-buru.** Tarik napas saat lengkung ke bawah, buang napas saat bungkuk ke atas. Ini mobilitas, bukan kecepatan." },
-    { id: 5, name: "Dead Hang",              sets: 3, reps: 30,  unit: "dtk",  ytId: "fq9gDvNZQ2c", isShorts: true,  catatan: "**Rilekskan bahu sepenuhnya — biarkan gravitasi yang bekerja.** Jangan aktif mengangkat atau menahan bahu. Bernafas normal selama hang." },
+    {
+      id: 1, name: "Hack Squat", sets: 3, reps: 10, unit: "rep", ytId: "", istirahat: "2 menit",
+      tujuan: "Melatih paha depan dengan stabilitas tinggi tanpa risiko goyang.",
+      kesalahan: "Tumit terangkat dari papan pijakan saat posisi di bawah. Seluruh telapak kaki harus menempel penuh sepanjang gerakan."
+    },
+    {
+      id: 2, name: "Lying Leg Curl", sets: 3, reps: 12, unit: "rep", ytId: "", istirahat: "90 dtk",
+      tujuan: "Isolasi paha belakang untuk mengimbangi dominasi kekuatan paha depan.",
+      kesalahan: "Pinggul terangkat dari bantalan mesin saat kaki menekuk beban. Pinggul harus tetap ditekan ke bawah."
+    },
+    {
+      id: 3, name: "Seated Calf Raise", sets: 3, reps: 20, unit: "rep", ytId: "", istirahat: "60 dtk",
+      tujuan: "Melatih otot betis bagian dalam agar kaki terlihat proporsional dari samping.",
+      kesalahan: "Gerakan setengah-setengah. Turunkan tumit sedalam mungkin hingga betis tertarik, lalu jinjit setinggi mungkin."
+    },
+    {
+      id: 4, name: "Deadbug", sets: 3, reps: 10, unit: "rep/sisi", ytId: "", istirahat: "60 dtk",
+      tujuan: "Latihan stabilitas inti untuk mengunci posisi panggul agar tidak condong ke depan.",
+      kesalahan: "Punggung bawah melengkung — ada celah antara punggung dan lantai. Punggung bawah wajib ditekan rata ke lantai selama tangan dan kaki bergerak."
+    },
   ];
 
   const SELESAI_INFO = {
-    senin:  { subtitle: "Latihan Senin · Push done ✓" },
-    rabu:   { subtitle: "Latihan Rabu · Legs done ✓"  },
-    jumat:  { subtitle: "Latihan Jumat · Pull done ✓"  },
-    harian: { subtitle: "Gerakan Harian · Selesai ✓"  },
+    senin:  { subtitle: "Latihan Senin · Upper A done ✓" },
+    selasa: { subtitle: "Latihan Selasa · Lower A done ✓" },
+    kamis:  { subtitle: "Latihan Kamis · Upper B done ✓" },
+    jumat:  { subtitle: "Latihan Jumat · Lower B done ✓" },
   };
-
-  const SUN_ICON = `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="var(--text-accent)" stroke-width="2" stroke-linecap="round">
-    <circle cx="16" cy="16" r="5.5"/>
-    <line x1="16" y1="3" x2="16" y2="6.5"/>
-    <line x1="16" y1="25.5" x2="16" y2="29"/>
-    <line x1="3" y1="16" x2="6.5" y2="16"/>
-    <line x1="25.5" y1="16" x2="29" y2="16"/>
-    <line x1="6.93" y1="6.93" x2="9.4" y2="9.4"/>
-    <line x1="22.6" y1="22.6" x2="25.07" y2="25.07"/>
-    <line x1="25.07" y1="6.93" x2="22.6" y2="9.4"/>
-    <line x1="9.4" y1="22.6" x2="6.93" y2="25.07"/>
-  </svg>`;
 
   function getUpcomingDate(dates) {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
     return dates.find(d => new Date(PROGRAM_YEAR, PROGRAM_MONTH, d).getTime() >= today) || dates[dates.length - 1];
-  }
-
-  function parseFormatted(text) {
-    const esc = s => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-    let out = "", buf = "", bold = false, italic = false, i = 0;
-    const flush = () => { if (!buf) return; let c = esc(buf); if (bold) c = "<b>"+c+"</b>"; if (italic) c = "<i>"+c+"</i>"; out += c; buf = ""; };
-    while (i < text.length) {
-      if (text.substr(i, 2) === "**") { flush(); bold = !bold; i += 2; }
-      else if (text[i] === "*") { flush(); italic = !italic; i += 1; }
-      else { buf += text[i]; i += 1; }
-    }
-    flush();
-    return out;
   }
 
   function renderHome() {
@@ -341,15 +415,14 @@
       if (diff >= 0 && diff < closestDiff) { closestDiff = diff; closestId = w.id; }
     });
 
-    const gymCards = WORKOUTS.map((w, idx) => {
+    document.getElementById("day-cards").innerHTML = WORKOUTS.map((w, idx) => {
       const upcoming = String(getUpcomingDate(w.dates)).padStart(2, "0");
       const upcomingTs = new Date(PROGRAM_YEAR, PROGRAM_MONTH, parseInt(upcoming, 10)).getTime();
       const isPast = upcomingTs < todayTs;
       const isNext = w.id === closestId;
       const extraClass = isNext ? " is-next" : isPast ? " is-past" : "";
-      const staggerDelay = `animation-delay:${idx * 80}ms`;
       return `
-        <div class="day-card${extraClass}" data-id="${w.id}" style="${staggerDelay}">
+        <div class="day-card${extraClass}" data-id="${w.id}" style="animation-delay:${idx * 80}ms">
           <div class="day-card-left">
             <div class="day-card-title">${w.day}</div>
             <div class="day-card-focus">${w.focus}</div>
@@ -361,18 +434,6 @@
           <div class="day-card-accent"></div>
         </div>`;
     }).join("");
-
-    const harianCard = `
-      <div class="day-card" data-id="harian" style="animation-delay:${WORKOUTS.length * 80}ms">
-        <div class="day-card-left">
-          <div class="day-card-title">Gerakan Harian</div>
-          <div class="day-card-focus">Postur & Mobilitas</div>
-        </div>
-        <div class="day-card-sun">${SUN_ICON}</div>
-        <div class="day-card-accent"></div>
-      </div>`;
-
-    document.getElementById("day-cards").innerHTML = gymCards + harianCard;
 
     document.querySelectorAll(".day-card").forEach(el => {
       el.addEventListener("click", e => {
@@ -386,28 +447,23 @@
         el.appendChild(ripple);
         setTimeout(() => ripple.remove(), 520);
         const id = el.dataset.id;
-        setTimeout(() => {
-          if (id === "senin") location.hash = "#/senin/1";
-          else if (id === "rabu") location.hash = "#/rabu/1";
-          else if (id === "jumat") location.hash = "#/jumat/1";
-          else if (id === "harian") location.hash = "#/harian/1";
-        }, 120);
+        setTimeout(() => { location.hash = "#/" + id + "/1"; }, 120);
       });
     });
   }
 
   function getExercises(hari) {
-    if (hari === "rabu") return RABU_EXERCISES;
-    if (hari === "jumat") return JUMAT_EXERCISES;
-    if (hari === "harian") return HARIAN_EXERCISES;
+    if (hari === "selasa") return SELASA_EXERCISES;
+    if (hari === "kamis")  return KAMIS_EXERCISES;
+    if (hari === "jumat")  return JUMAT_EXERCISES;
     return SENIN_EXERCISES;
   }
 
   function getHariFromHash() {
     const h = location.hash;
-    if (h.startsWith("#/rabu/")) return "rabu";
-    if (h.startsWith("#/jumat/")) return "jumat";
-    if (h.startsWith("#/harian/")) return "harian";
+    if (h.startsWith("#/selasa/")) return "selasa";
+    if (h.startsWith("#/kamis/"))  return "kamis";
+    if (h.startsWith("#/jumat/"))  return "jumat";
     return "senin";
   }
 
@@ -415,16 +471,27 @@
     const ex = exercises.find(e => e.id === idNum);
     if (!ex) { location.hash = "#/"; return; }
     const total = exercises.length;
+
     document.getElementById("progress-text").textContent = idNum + " / " + total;
     document.getElementById("exercise-label").textContent = "GERAKAN " + idNum;
     document.getElementById("exercise-name").textContent = ex.name;
     document.getElementById("chip-sets").textContent = ex.sets;
     document.getElementById("chip-reps").textContent = ex.reps;
     document.getElementById("chip-unit").textContent = ex.unit || "rep";
-    document.getElementById("video-thumb-img").src = "https://img.youtube.com/vi/" + ex.ytId + "/hqdefault.jpg";
-    document.getElementById("video-thumb").dataset.ytId = ex.ytId;
-    document.getElementById("video-thumb-badge").textContent = ex.isShorts ? "YouTube Shorts" : "YouTube";
-    document.getElementById("catatan-text").innerHTML = parseFormatted(ex.catatan);
+    document.getElementById("chip-istirahat").textContent = ex.istirahat;
+    document.getElementById("tujuan-text").textContent = ex.tujuan;
+    document.getElementById("kesalahan-text").textContent = ex.kesalahan;
+
+    const hasVideo = !!ex.ytId;
+    document.getElementById("video-thumb-img").style.display = hasVideo ? "block" : "none";
+    if (hasVideo) document.getElementById("video-thumb-img").src = "https://img.youtube.com/vi/" + ex.ytId + "/hqdefault.jpg";
+    document.getElementById("video-placeholder").style.display = hasVideo ? "none" : "flex";
+    document.getElementById("video-thumb-overlay").style.display = hasVideo ? "block" : "none";
+    document.getElementById("video-play-circle").style.display = hasVideo ? "flex" : "none";
+    document.getElementById("video-thumb-badge").style.display = hasVideo ? "block" : "none";
+    document.getElementById("video-thumb").dataset.ytId = ex.ytId || "";
+    document.getElementById("video-thumb").style.cursor = hasVideo ? "pointer" : "default";
+
     const isLast = idNum === total;
     if (isLast) {
       const hari = getHariFromHash();
@@ -433,10 +500,12 @@
       document.getElementById("selesai-gerakan").textContent = total;
       document.getElementById("selesai-total-set").textContent = totalSets;
     }
+
     const next = isLast ? null : exercises.find(e => e.id === idNum + 1);
     const btn = document.getElementById("btn-lanjut");
     btn.textContent = isLast ? "Selesai →" : ("Lanjut → " + next.name);
     btn.dataset.target = isLast ? "selesai" : String(idNum + 1);
+
     document.getElementById("dot-row").innerHTML = exercises.map(e =>
       '<div class="dot' + (e.id === idNum ? " active" : "") + '"></div>'
     ).join("");
@@ -459,13 +528,9 @@
     next.classList.add("active");
     if (name === "selesai") {
       const badge = next.querySelector(".badge");
-      const body = next.querySelector(".selesai-body");
-      const ring = next.querySelector(".ring-pulse");
-      [badge, body, ring].forEach(el => {
-        el.style.animation = "none";
-        el.offsetHeight;
-        el.style.animation = "";
-      });
+      const body  = next.querySelector(".selesai-body");
+      const ring  = next.querySelector(".ring-pulse");
+      [badge, body, ring].forEach(el => { el.style.animation = "none"; el.offsetHeight; el.style.animation = ""; });
     }
   }
 
@@ -474,16 +539,16 @@
     if (hash === "#/" || hash === "") {
       showScreen("home");
     } else if (
-      hash === "#/senin/selesai" ||
-      hash === "#/rabu/selesai" ||
-      hash === "#/jumat/selesai" ||
-      hash === "#/harian/selesai"
+      hash === "#/senin/selesai"  ||
+      hash === "#/selasa/selesai" ||
+      hash === "#/kamis/selesai"  ||
+      hash === "#/jumat/selesai"
     ) {
       showScreen("selesai");
     } else {
-      const m = hash.match(/^#\/(senin|rabu|jumat|harian)\/(\d+)$/);
+      const m = hash.match(/^#\/(senin|selasa|kamis|jumat)\/(\d+)$/);
       if (m) {
-        const hari = m[1];
+        const hari  = m[1];
         const idNum = parseInt(m[2], 10);
         const exercises = getExercises(hari);
         if (idNum >= 1 && idNum <= exercises.length) {
@@ -498,7 +563,7 @@
     }
   }
 
-  const modal = document.getElementById("video-modal");
+  const modal     = document.getElementById("video-modal");
   const iframeWrap = document.getElementById("iframe-wrap");
 
   function openVideo(ytId) {
@@ -518,9 +583,8 @@
   document.getElementById("btn-back").addEventListener("click", () => {
     if (history.length > 1) history.back(); else location.hash = "#/";
   });
-
   document.getElementById("btn-lanjut").addEventListener("click", e => {
-    const t = e.currentTarget.dataset.target;
+    const t    = e.currentTarget.dataset.target;
     const hari = getHariFromHash();
     if (t === "selesai") { location.hash = "#/" + hari + "/selesai"; return; }
     if (!t) return;
@@ -536,7 +600,6 @@
       }));
     }, 180);
   });
-
   document.getElementById("btn-kembali").addEventListener("click", () => location.hash = "#/");
 
   renderHome();
