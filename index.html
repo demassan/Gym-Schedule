@@ -181,7 +181,7 @@
     <div class="scroll-area">
       <div class="home-padding">
         <div class="home-header">
-          <div class="home-subtitle">JULI 2026</div>
+          <div class="home-subtitle">SEPTEMBER 2026</div>
           <div class="home-title">Perbaikan Postur<br/>Raihan</div>
         </div>
         <div id="day-cards"></div>
@@ -289,13 +289,13 @@
 
 </div>
 <script>
-  const PROGRAM_YEAR = 2026, PROGRAM_MONTH = 6, MONTH_LABEL = "Juli";
+  const PROGRAM_YEAR = 2026, PROGRAM_MONTH = 8, MONTH_LABEL = "September";
 
   const WORKOUTS = [
-    { id: "senin",  day: "Senin",  focus: "Upper A", dates: [6, 13, 20, 27] },
-    { id: "selasa", day: "Selasa", focus: "Lower A", dates: [7, 14, 21, 28] },
-    { id: "kamis",  day: "Kamis",  focus: "Upper B", dates: [2, 9, 16, 23, 30] },
-    { id: "jumat",  day: "Jumat",  focus: "Lower B", dates: [3, 10, 17, 24, 31] },
+    { id: "senin",  day: "Senin",  focus: "Upper A", dates: [7, 14, 21, 28] },
+    { id: "rabu",   day: "Rabu",   focus: "Lower A", dates: [2, 9, 16, 23, 30] },
+    { id: "jumat",  day: "Jumat",  focus: "Upper B", dates: [4, 11, 18, 25] },
+    { id: "sabtu",  day: "Sabtu",  focus: "Lower B", dates: [5, 12, 19, 26] },
   ];
 
   const SENIN_EXERCISES = [
@@ -321,7 +321,7 @@
     },
   ];
 
-  const SELASA_EXERCISES = [
+  const RABU_EXERCISES = [
     {
       id: 1, name: "Leg Press", sets: 3, reps: 10, unit: "rep", ytId: "_bkqGYB-fWI", isShorts: true, istirahat: "2 menit",
       tujuan: "Melatih paha depan secara maksimal dengan punggung tersangga aman.",
@@ -344,7 +344,7 @@
     },
   ];
 
-  const KAMIS_EXERCISES = [
+  const JUMAT_EXERCISES = [
     {
       id: 1, name: "Incline Dumbbell Press (30°)", sets: 3, reps: 10, unit: "rep", ytId: "8fXfwG4ftaQ", isShorts: true, istirahat: "2 menit",
       tujuan: "Mengisi dada bagian atas agar kemeja terlihat bidang dan penuh.",
@@ -367,7 +367,7 @@
     },
   ];
 
-  const JUMAT_EXERCISES = [
+  const SABTU_EXERCISES = [
     {
       id: 1, name: "Hack Squat", sets: 3, reps: 10, unit: "rep", ytId: "dJcCdRH_2i8", isShorts: true, istirahat: "2 menit",
       tujuan: "Melatih paha depan dengan stabilitas tinggi tanpa risiko goyang.",
@@ -391,10 +391,10 @@
   ];
 
   const SELESAI_INFO = {
-    senin:  { subtitle: "Latihan Senin · Upper A done ✓" },
-    selasa: { subtitle: "Latihan Selasa · Lower A done ✓" },
-    kamis:  { subtitle: "Latihan Kamis · Upper B done ✓" },
-    jumat:  { subtitle: "Latihan Jumat · Lower B done ✓" },
+    senin:  { subtitle: "Latihan Senin · Upper A done ✓"  },
+    rabu:   { subtitle: "Latihan Rabu · Lower A done ✓"   },
+    jumat:  { subtitle: "Latihan Jumat · Upper B done ✓"  },
+    sabtu:  { subtitle: "Latihan Sabtu · Lower B done ✓"  },
   };
 
   function getUpcomingDate(dates) {
@@ -453,17 +453,17 @@
   }
 
   function getExercises(hari) {
-    if (hari === "selasa") return SELASA_EXERCISES;
-    if (hari === "kamis")  return KAMIS_EXERCISES;
-    if (hari === "jumat")  return JUMAT_EXERCISES;
+    if (hari === "rabu")  return RABU_EXERCISES;
+    if (hari === "jumat") return JUMAT_EXERCISES;
+    if (hari === "sabtu") return SABTU_EXERCISES;
     return SENIN_EXERCISES;
   }
 
   function getHariFromHash() {
     const h = location.hash;
-    if (h.startsWith("#/selasa/")) return "selasa";
-    if (h.startsWith("#/kamis/"))  return "kamis";
-    if (h.startsWith("#/jumat/"))  return "jumat";
+    if (h.startsWith("#/rabu/"))  return "rabu";
+    if (h.startsWith("#/jumat/")) return "jumat";
+    if (h.startsWith("#/sabtu/")) return "sabtu";
     return "senin";
   }
 
@@ -541,13 +541,13 @@
       showScreen("home");
     } else if (
       hash === "#/senin/selesai"  ||
-      hash === "#/selasa/selesai" ||
-      hash === "#/kamis/selesai"  ||
-      hash === "#/jumat/selesai"
+      hash === "#/rabu/selesai"   ||
+      hash === "#/jumat/selesai"  ||
+      hash === "#/sabtu/selesai"
     ) {
       showScreen("selesai");
     } else {
-      const m = hash.match(/^#\/(senin|selasa|kamis|jumat)\/(\d+)$/);
+      const m = hash.match(/^#\/(senin|rabu|jumat|sabtu)\/(\d+)$/);
       if (m) {
         const hari  = m[1];
         const idNum = parseInt(m[2], 10);
@@ -564,7 +564,7 @@
     }
   }
 
-  const modal     = document.getElementById("video-modal");
+  const modal      = document.getElementById("video-modal");
   const iframeWrap = document.getElementById("iframe-wrap");
 
   function openVideo(ytId) {
